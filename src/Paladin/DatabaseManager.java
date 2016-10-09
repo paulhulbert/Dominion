@@ -1,3 +1,5 @@
+package Paladin;
+
 import com.fasterxml.jackson.core.JsonParser;
 
 import java.sql.*;

@@ -1,6 +1,7 @@
+package Paladin;
+
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 
 /**
  *
@@ -45,5 +46,10 @@ public class Deck {
         }
 
         return drawPile.remove(drawPile.size() - 1);
+    }
+
+
+    public void shuffleDeck() {
+        Collections.shuffle(drawPile);
     }
 }

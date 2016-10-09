@@ -10,7 +10,7 @@ CREATE TABLE `dominion`.`actions` (
   `ID` INT NOT NULL auto_increment,
   `time_created` MEDIUMTEXT NULL,
   `GameID` INT NULL,
-  `Player` VARCHAR(45) NULL,
+  `Paladin.Player` VARCHAR(45) NULL,
   `Details` VARCHAR(1000) NULL,
   PRIMARY KEY (`ID`),
   UNIQUE INDEX `ID_UNIQUE` (`ID` ASC));
