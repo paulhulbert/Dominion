@@ -1,5 +1,7 @@
 package Paladin;
 
+import com.google.gson.JsonElement;
+
 import java.util.ArrayList;
 
 /**
@@ -19,7 +21,7 @@ public abstract class Card {
 
     }
 
-    public void onPlay(Turn turn) {
+    public void onPlay(Turn turn, JsonElement choices) {
 
     }
 
@@ -35,6 +37,7 @@ public abstract class Card {
         this.cost = cost;
         this.name = name;
         this.ID = ID;
+        Constants.cards.put(ID, this);
     }
 
     public int getCost() {

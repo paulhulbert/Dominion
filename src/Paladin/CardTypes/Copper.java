@@ -7,6 +7,7 @@ import Paladin.Card;
 import Paladin.CardType;
 import Paladin.Constants;
 import Paladin.Turn;
+import com.google.gson.JsonElement;
 
 /**
  * Created by paulh on 10/8/2016.
@@ -25,8 +26,8 @@ public class Copper extends Card {
     }
 
     @Override
-    public void onPlay(Turn turn) {
-        super.onPlay(turn);
+    public void onPlay(Turn turn, JsonElement choices) {
+        super.onPlay(turn, choices);
         turn.addMoney(1);
     }
 }

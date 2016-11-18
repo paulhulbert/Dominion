@@ -30,7 +30,7 @@ public class GameManagerObject {
         players.add(localPlayer);
 
         addPile(Copper.class.getName(), 100);
-        addPile(Estate.class.getName(), 12);
+        addPile(Estate.class.getName(), 8);
 
 
         System.out.println("Game is set up.");
@@ -71,12 +71,18 @@ public class GameManagerObject {
 
     }
 
+    public static void addMessage(Message message) {
+        MessageHandler.handleMessage(message);
+        //TODO:  Add database code here
+    }
+
 
     public static void main(String[] args) {
         setupGame(true);
         System.out.println("hello");
         startGame();
-        turns.get(0).buyCard(Copper.class.getName());
+        addMessage(new Message(1l,1,"Paul","{ \"time_created\":1133442, \"GameID\":115, \"Play" +
+                "er\":\"Paul\", \"Details\":{ \"type\":\"play\", \"cardID\":\"1\" } }"));
         turns.get(0).endTurn();
         System.out.println("there");
     }

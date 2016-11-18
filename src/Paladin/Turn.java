@@ -1,6 +1,7 @@
 package Paladin;
 
 import Paladin.Exceptions.GameLogicException;
+import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 
@@ -27,11 +28,14 @@ public class Turn {
     }
 
 
-    public void playCard(Card card) throws GameLogicException {
+    public void playCard(Card card, JsonElement choices) throws GameLogicException {
         if (phase == TurnPhase.ACTION && currentActions <= 0) {
             throw new GameLogicException("Not enough actions.");
         }
-        card.onPlay(this);
+        if (!currentPlayer.getHand().contains(card)) {
+            throw new GameLogicException("Attempted to play card not in hand");
+        }
+        card.onPlay(this, choices);
         cardsPlayedThisTurn.add(card);
         currentPlayer.getHand().removeCard(card);
 
@@ -42,7 +46,12 @@ public class Turn {
 
     public boolean buyCard(String name) {
 
-        Card card = GameManagerObject.piles.get(name).getTopCard();
+        Card card = null;
+        if (GameManagerObject.piles.containsKey(name)) {
+            card = GameManagerObject.piles.get(name).getTopCard();
+        } else {
+            card = GameManagerObject.piles.get(Constants.cardIdentifiers.get(name)).getTopCard();
+        }
 
         if (card.getCost() > currentMoney) {
             return false;

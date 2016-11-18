@@ -1,0 +1,21 @@
+{
+    "time_created":1133442,
+    "GameID":115,
+    "Player":"Paul",
+    "Details":{
+        "type":"buy",
+        "cardName":"Copper"
+    }
+}
+
+
+{
+    "time_created":1133442,
+    "GameID":115,
+    "Player":"Paul",
+    "Details":{
+        "type":"play",
+        "cardID":430,
+        "choices":"<choices>"
+    }
+}

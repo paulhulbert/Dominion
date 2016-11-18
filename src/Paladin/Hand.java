@@ -32,4 +32,9 @@ public class Hand {
 
         cards.remove(cardToRemove);
     }
+
+
+    public boolean contains(Card card) {
+        return cards.contains(card);
+    }
 }
