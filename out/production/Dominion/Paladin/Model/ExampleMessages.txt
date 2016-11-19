@@ -1,0 +1,33 @@
+{
+    "time_created":1133442,
+    "GameID":115,
+    "Player":"Paul",
+    "Details":{
+        "type":"buy",
+        "cardName":"Copper"
+    }
+}
+
+
+{
+    "time_created":1133442,
+    "GameID":115,
+    "Player":"Paul",
+    "Details":{
+        "type":"play",
+        "cardID":430,
+        "choices":"<choices>"
+    }
+}
+
+
+{
+    "time_created":1133442,
+    "GameID":115,
+    "Player":"Paul",
+    "Details":{
+        "type":"shuffle",
+        "target":"David",
+        "newDeck":"[45,23,67,24,7,5,22,56,88]"   //Last card is top of the deck
+    }
+}
