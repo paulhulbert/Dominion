@@ -48,4 +48,9 @@ public class Player {
     public Hand getHand() {
         return hand;
     }
+
+    @Override
+    public boolean equals(Object player) {
+        return this.getName() == ((Player) player).getName();
+    }
 }

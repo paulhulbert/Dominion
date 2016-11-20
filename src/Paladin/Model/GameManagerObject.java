@@ -1,8 +1,10 @@
 package Paladin.Model;
 
+import Paladin.Controller.UserRequester;
 import Paladin.Model.CardTypes.Copper;
 import Paladin.Model.CardTypes.Estate;
 import Paladin.Model.Exceptions.GameLogicException;
+import Paladin.View.UIInterface;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -12,6 +14,9 @@ import java.util.HashMap;
  * Created by paulh on 10/4/2016.
  */
 public class GameManagerObject {
+
+    public static UserRequester userRequester;
+    public static UIInterface uiInterface;
 
     public static Player host;
     public static Player localPlayer;
@@ -44,10 +49,11 @@ public class GameManagerObject {
     }
 
 
-    public static void startGame() {
+    public static void startGame() throws GameLogicException {
         currentPlayer = players.get(0);
         Turn turn = new Turn(currentPlayer);
         turns.add(turn);
+        turn.playTurn();
     }
 
     public static void addPile(String name) {

@@ -2,6 +2,8 @@ package Paladin.Controller;
 
 import Paladin.Model.Card;
 
+import java.util.ArrayList;
+
 /**
  * This class is the interface for a class that will ask the user for an input via a GUI
  *
@@ -9,7 +11,7 @@ import Paladin.Model.Card;
  */
 public interface UserRequester {
 
-    Card askUserToPlayAction();
+    Card askUserToSelectSingleCard(ArrayList<Card> options);
 
-    Card askUserToPlayTreasure();
+    Card askUserToPlayTreasure(ArrayList<Card> options);
 }

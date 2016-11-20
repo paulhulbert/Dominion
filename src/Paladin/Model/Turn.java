@@ -1,5 +1,6 @@
 package Paladin.Model;
 
+import Paladin.Controller.DesktopUserRequester;
 import Paladin.Model.Exceptions.GameLogicException;
 import com.google.gson.JsonElement;
 
@@ -23,8 +24,61 @@ public class Turn {
     private ArrayList<Card> cardsPlayedThisTurn = new ArrayList<>();
     private ArrayList<Card> cardsGainedThisTurn = new ArrayList<>();
 
-    public Turn(Player currentPlayer) {
+    public Turn(Player currentPlayer) throws GameLogicException {
         this.currentPlayer = currentPlayer;
+    }
+
+    public void playTurn() throws GameLogicException {
+
+        while (currentActions > 0 && phase == TurnPhase.ACTION) {
+            if (GameManagerObject.localPlayer.equals(currentPlayer)) {
+                ArrayList<Card> actionCardsInHand = new ArrayList<>();
+                for (Card card : currentPlayer.getHand().getCards()) {
+                    if (Constants.cardTypes.get(card.getName()).contains(CardType.ACTION)) {
+                        actionCardsInHand.add(card);
+                    }
+                }
+                if (actionCardsInHand.isEmpty()) {
+                    break;
+                }
+                actionCardsInHand.add(null);
+                Card cardToPlay = GameManagerObject.userRequester.askUserToSelectSingleCard(actionCardsInHand);
+                if (cardToPlay == null) {
+                    break;
+                }
+                playCard(cardToPlay, null);
+            } else {
+                //TODO: Write database reader code
+            }
+            GameManagerObject.uiInterface.update();
+        }
+        phase = TurnPhase.BUY;
+
+        while (phase == TurnPhase.BUY) {
+            if (GameManagerObject.localPlayer.equals(currentPlayer)) {
+                ArrayList<Card> treasureCardsInHand = new ArrayList<>();
+                for (Card card : currentPlayer.getHand().getCards()) {
+                    if (Constants.cardTypes.get(card.getName()).contains(CardType.TREASURE)) {
+                        treasureCardsInHand.add(card);
+                    }
+                }
+                if (treasureCardsInHand.isEmpty()) {
+                    break;
+                }
+                treasureCardsInHand.add(null);
+                Card cardToPlay = GameManagerObject.userRequester.askUserToSelectSingleCard(treasureCardsInHand);
+                if (cardToPlay == null) {
+                    break;
+                }
+                playCard(cardToPlay, null);
+            } else {
+                //TODO: Write database reader code
+            }
+            GameManagerObject.uiInterface.update();
+        }
+        phase = TurnPhase.CLEANUP;
+
+        endTurn();
     }
 
 
@@ -113,4 +167,51 @@ public class Turn {
         }
     }
 
+    public TurnPhase getPhase() {
+        return phase;
+    }
+
+    public void setPhase(TurnPhase phase) {
+        this.phase = phase;
+    }
+
+    public int getCurrentMoney() {
+        return currentMoney;
+    }
+
+    public void setCurrentMoney(int currentMoney) {
+        this.currentMoney = currentMoney;
+    }
+
+    public int getCurrentActions() {
+        return currentActions;
+    }
+
+    public void setCurrentActions(int currentActions) {
+        this.currentActions = currentActions;
+    }
+
+    public int getCurrentBuys() {
+        return currentBuys;
+    }
+
+    public void setCurrentBuys(int currentBuys) {
+        this.currentBuys = currentBuys;
+    }
+
+    public ArrayList<Card> getCardsPlayedThisTurn() {
+        return cardsPlayedThisTurn;
+    }
+
+    public void setCardsPlayedThisTurn(ArrayList<Card> cardsPlayedThisTurn) {
+        this.cardsPlayedThisTurn = cardsPlayedThisTurn;
+    }
+
+    public ArrayList<Card> getCardsGainedThisTurn() {
+        return cardsGainedThisTurn;
+    }
+
+    public void setCardsGainedThisTurn(ArrayList<Card> cardsGainedThisTurn) {
+        this.cardsGainedThisTurn = cardsGainedThisTurn;
+    }
 }

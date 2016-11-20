@@ -52,8 +52,14 @@ public abstract class Card {
 
     @Override
     public boolean equals(Object card) {
+        if (card == null) {
+            return false;
+        }
         return this.getID() == ((Card) card).getID();
     }
 
-
+    @Override
+    public String toString() {
+        return name;
+    }
 }
