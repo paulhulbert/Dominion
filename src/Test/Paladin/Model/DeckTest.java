@@ -15,16 +15,26 @@ import java.util.Collections;
 public class DeckTest {
 
 
+    private void setup() {
+        try {
+            GameManagerObject.uiInterface = new UnitTestUI();
+            GameManagerObject.userRequester = new UnitTestUserRequester();
+            GameManagerObject.setupGame(true);
+            GameManagerObject.startGame();
+        } catch (GameLogicException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Test
     public void testDrawCard() {
         try {
 
-            GameManagerObject.setupGame(true);
+            setup();
 
             int newCardID = Constants.getNewCardID();
             Card topCard = new Copper(newCardID);
-            GameManagerObject.startGame();
 
             GameManagerObject.turns.get(0).currentPlayer.getDeck().addCardToTopOfDrawPile(topCard);
 
@@ -41,9 +51,7 @@ public class DeckTest {
     public void testShuffle() {
         try {
 
-            GameManagerObject.setupGame(true);
-
-            GameManagerObject.startGame();
+            setup();
 
             for (int i = 0; i < 3; i++) {
                 GameManagerObject.turns.get(0).drawCard();
@@ -65,9 +73,7 @@ public class DeckTest {
     public void testShuffleSeed() {
         try {
 
-            GameManagerObject.setupGame(true);
-
-            GameManagerObject.startGame();
+            setup();
 
             for (int i = 0; i < 3; i++) {
                 GameManagerObject.turns.get(0).drawCard();
@@ -108,9 +114,7 @@ public class DeckTest {
     public void testShuffleSeedUsingMessage() {
         try {
 
-            GameManagerObject.setupGame(true);
-
-            GameManagerObject.startGame();
+            setup();
 
             for (int i = 0; i < 3; i++) {
                 GameManagerObject.turns.get(0).drawCard();
