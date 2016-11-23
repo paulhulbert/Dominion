@@ -7,6 +7,7 @@ import Paladin.Model.Exceptions.GameLogicException;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * Created by paulh on 11/19/2016.
@@ -50,6 +51,7 @@ public class MainWindow implements UIInterface{
 
 
     public void update() {
+        debugOutput();
         Player localPlayer = GameManagerObject.localPlayer;
         Hand localHand = localPlayer.getHand();
 
@@ -57,6 +59,19 @@ public class MainWindow implements UIInterface{
 
         for (Card card : localHand.getCards()) {
             ((DefaultListModel)myHand.getModel()).addElement(card.getName());
+        }
+
+        ((DefaultListModel)decks.getModel()).clear();
+
+        for (String s : GameManagerObject.piles.keySet()) {
+            SupplyPile pile = GameManagerObject.piles.get(s);
+            String nameOfPile = pile.getName();
+            String costOfPile = "~";
+            if (pile.getTopCard() != null) {
+                costOfPile = pile.getTopCard().getCost() + "";
+            }
+            String cardsRemaining = pile.getSize() + "";
+            ((DefaultListModel)decks.getModel()).addElement(nameOfPile + " - Cost: " + costOfPile + " - Remaining: " + cardsRemaining);
         }
 
         Turn currentTurn = GameManagerObject.turns.get(GameManagerObject.turns.size()-1);
@@ -74,6 +89,25 @@ public class MainWindow implements UIInterface{
         }
 
         this.currentTurn.setText(cardsPlayed);
+    }
+
+
+    private void debugOutput() {
+        ArrayList<Card> cardsInHand = GameManagerObject.localPlayer.getHand().getCards();
+        ArrayList<Card> cardsInDraw = GameManagerObject.localPlayer.getDeck().getDrawPile();
+        ArrayList<Card> cardsInDiscard = GameManagerObject.localPlayer.getDeck().getDiscardPile();
+        ArrayList<Card> cardsInTrash = GameManagerObject.trash;
+        ArrayList<Card> cardsPlayedThisTurn = GameManagerObject.getCurrentTurn().getCardsPlayedThisTurn();
+        ArrayList<Card> cardsGainedThisTurn = GameManagerObject.getCurrentTurn().getCardsGainedThisTurn();
+
+
+
+        System.out.println("Cards in hand: " + cardsInHand);
+        System.out.println("Cards in draw: " + cardsInDraw);
+        System.out.println("Cards in discard: " + cardsInDiscard);
+        System.out.println("Cards in trash: " + cardsInTrash);
+        System.out.println("Cards played this turn: " + cardsPlayedThisTurn);
+        System.out.println("Cards gained this turn: " + cardsGainedThisTurn);
     }
 
     private void createUIComponents() {

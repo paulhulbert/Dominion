@@ -1,8 +1,7 @@
 package Paladin.Model;
 
 import Paladin.Controller.UserRequester;
-import Paladin.Model.CardTypes.Copper;
-import Paladin.Model.CardTypes.Estate;
+import Paladin.Model.CardTypes.*;
 import Paladin.Model.Exceptions.GameLogicException;
 import Paladin.View.UIInterface;
 
@@ -15,6 +14,8 @@ import java.util.HashMap;
  */
 public class GameManagerObject {
 
+    public static boolean gameOver = false;
+
     public static UserRequester userRequester;
     public static UIInterface uiInterface;
 
@@ -26,6 +27,8 @@ public class GameManagerObject {
     public static HashMap<String, SupplyPile> piles = new HashMap<>();
 
     public static ArrayList<Turn> turns = new ArrayList<>();
+
+    public static ArrayList<Card> trash = new ArrayList<>();
 
 
     public static void setupGame(boolean isHost) throws GameLogicException {
@@ -41,6 +44,20 @@ public class GameManagerObject {
 
         addPile(Copper.class.getName(), 100);
         addPile(Estate.class.getName(), 8);
+        addPile(Village.class.getName(), 10);
+        addPile(Woodcutter.class.getName(), 10);
+        addPile(Smithy.class.getName(), 10);
+        addPile(Cellar.class.getName(), 10);
+        addPile(Moat.class.getName(), 10);
+        addPile(Workshop.class.getName(), 10);
+        addPile(Remodel.class.getName(), 10);
+        addPile(Duchy.class.getName(), 8);
+        addPile(Gold.class.getName(), 30);
+        addPile(Market.class.getName(), 10);
+        addPile(Militia.class.getName(), 10);
+        addPile(Mine.class.getName(), 10);
+        addPile(Province.class.getName(), 8);
+        addPile(Silver.class.getName(), 60);
 
         turns.clear();
 
@@ -53,6 +70,7 @@ public class GameManagerObject {
         currentPlayer = players.get(0);
         Turn turn = new Turn(currentPlayer);
         turns.add(turn);
+        uiInterface.update();
         turn.playTurn();
     }
 
@@ -73,7 +91,14 @@ public class GameManagerObject {
         host = player;
     }
 
+    public static Turn getCurrentTurn() {
+        return turns.get(turns.size()-1);
+    }
+
     public static void endturn() throws GameLogicException {
+        if (gameOver) {
+            return;
+        }
         if (players.isEmpty()) {
             throw new GameLogicException("Players list was empty");
         }
@@ -81,6 +106,8 @@ public class GameManagerObject {
         players.add(current);
         currentPlayer = players.get(0);
         turns.add(new Turn(currentPlayer));
+        uiInterface.update();
+        turns.get(turns.size() - 1).playTurn();
 
     }
 

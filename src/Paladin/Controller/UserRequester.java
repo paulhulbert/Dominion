@@ -11,7 +11,9 @@ import java.util.ArrayList;
  */
 public interface UserRequester {
 
-    Card askUserToSelectSingleCard(ArrayList<Card> options);
+    Card askUserToSelectSingleCard(ArrayList<Card> options, String message, String title);
+
+    ArrayList<Card> askUserToSelectManyCards(ArrayList<Card> options, String message, String title, int min, int max);
 
     Card askUserToPlayTreasure(ArrayList<Card> options);
 }

@@ -42,7 +42,9 @@ public class Turn {
                     break;
                 }
                 actionCardsInHand.add(null);
-                Card cardToPlay = GameManagerObject.userRequester.askUserToSelectSingleCard(actionCardsInHand);
+                Card cardToPlay = GameManagerObject.userRequester.askUserToSelectSingleCard(actionCardsInHand,
+                        "Play an action card",
+                        "Choose Action Card");
                 if (cardToPlay == null) {
                     break;
                 }
@@ -66,11 +68,39 @@ public class Turn {
                     break;
                 }
                 treasureCardsInHand.add(null);
-                Card cardToPlay = GameManagerObject.userRequester.askUserToSelectSingleCard(treasureCardsInHand);
+                Card cardToPlay = GameManagerObject.userRequester.askUserToSelectSingleCard(treasureCardsInHand,
+                        "Play a treasure card",
+                        "Choose Treasure Card");
                 if (cardToPlay == null) {
                     break;
                 }
                 playCard(cardToPlay, null);
+            } else {
+                //TODO: Write database reader code
+            }
+            GameManagerObject.uiInterface.update();
+        }
+
+        while (phase == TurnPhase.BUY && currentBuys > 0) {
+            if (GameManagerObject.localPlayer.equals(currentPlayer)) {
+                ArrayList<Card> buyOptions = new ArrayList<>();
+                for (String s : GameManagerObject.piles.keySet()) {
+                    SupplyPile pile = GameManagerObject.piles.get(s);
+                    if (pile.getTopCard() != null && pile.getTopCard().getCost() <= currentMoney) {
+                        buyOptions.add(pile.getTopCard());
+                    }
+                }
+                if (buyOptions.isEmpty()) {
+                    break;
+                }
+                buyOptions.add(null);
+                Card cardToBuy = GameManagerObject.userRequester.askUserToSelectSingleCard(buyOptions,
+                        "Choose a card to buy",
+                        "Choose Deck");
+                if (cardToBuy == null) {
+                    break;
+                }
+                buyCard(cardToBuy.getClass().getName());
             } else {
                 //TODO: Write database reader code
             }
@@ -82,6 +112,19 @@ public class Turn {
     }
 
 
+    public void trashCard(Card card, JsonElement choices) throws GameLogicException {
+        if (!currentPlayer.getHand().contains(card)) {
+            throw new GameLogicException("Attempted to trash card not in hand");
+        }
+
+        card.onTrash(this, choices);
+
+        currentPlayer.getHand().removeCard(card);
+
+        GameManagerObject.trash.add(card);
+    }
+
+
     public void playCard(Card card, JsonElement choices) throws GameLogicException {
         if (phase == TurnPhase.ACTION && currentActions <= 0) {
             throw new GameLogicException("Not enough actions.");
@@ -89,9 +132,10 @@ public class Turn {
         if (!currentPlayer.getHand().contains(card)) {
             throw new GameLogicException("Attempted to play card not in hand");
         }
-        card.onPlay(this, choices);
+
         cardsPlayedThisTurn.add(card);
         currentPlayer.getHand().removeCard(card);
+        card.onPlay(this, choices);
 
         if (phase == TurnPhase.ACTION) {
             currentActions--;
@@ -121,8 +165,17 @@ public class Turn {
 
     }
 
+    public void discardCard(Card card) {
+        currentPlayer.getDeck().addCardToDiscard(card);
+        currentPlayer.getHand().removeCard(card);
+    }
+
     public void drawCard() throws GameLogicException {
-        currentPlayer.getHand().addCard(currentPlayer.getDeck().drawCard());
+        Card card = currentPlayer.getDeck().drawCard();
+        if (card == null) {
+            return;
+        }
+        currentPlayer.getHand().addCard(card);
     }
 
     public void addMoney(int amount) {

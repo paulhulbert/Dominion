@@ -30,10 +30,6 @@ public class Constants {
      */
     public static HashMap<String, String> cardIdentifiers = new HashMap<>();
 
-    static {
-        cardIdentifiers.put("Copper", Copper.class.getName());
-        cardIdentifiers.put("Estate", Estate.class.getName());
-    }
 
 
     /**

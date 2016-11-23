@@ -9,21 +9,21 @@ import java.util.ArrayList;
 /**
  * Created by paulh on 10/8/2016.
  */
-public class Estate extends Card {
+public class Duchy extends Card {
 
-    private static String name = "Estate";
+    private static String name = "Duchy";
     static {
         ArrayList<CardType> cardTypes = new ArrayList<>();
         cardTypes.add(CardType.VICTORY);
         Constants.cardTypes.put(name, cardTypes);
         Constants.cardIdentifiers.put(name, Card.class.getName().replace("Card", "CardTypes." + name));
     }
-    public Estate(int ID) {
-        super(2, name, ID);
+    public Duchy(int ID) {
+        super(5, name, ID);
     }
 
     @Override
     public int getVictoryPointWorth() {
-        return super.getVictoryPointWorth() + 1;
+        return super.getVictoryPointWorth() + 3;
     }
 }

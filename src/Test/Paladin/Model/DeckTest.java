@@ -15,14 +15,33 @@ import java.util.Collections;
 public class DeckTest {
 
 
-    private void setup() {
+    private Thread setup() {
         try {
             GameManagerObject.uiInterface = new UnitTestUI();
             GameManagerObject.userRequester = new UnitTestUserRequester();
             GameManagerObject.setupGame(true);
-            GameManagerObject.startGame();
+            Thread starterThread = new Thread(new gameStarter());
+            UnitTestUserRequester.waitLength = 10000;
+            starterThread.start();
+            Thread.sleep(100);
+            return starterThread;
         } catch (GameLogicException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private class gameStarter implements Runnable {
+        @Override
+        public void run() {
+            try {
+                GameManagerObject.startGame();
+            } catch (GameLogicException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -31,7 +50,8 @@ public class DeckTest {
     public void testDrawCard() {
         try {
 
-            setup();
+
+            Thread starter = setup();
 
             int newCardID = Constants.getNewCardID();
             Card topCard = new Copper(newCardID);
@@ -41,7 +61,8 @@ public class DeckTest {
 
             Assert.assertEquals(topCard, GameManagerObject.turns.get(0).currentPlayer.getDeck().drawCard());
 
-            GameManagerObject.turns.get(0).endTurn();
+            GameManagerObject.gameOver = true;
+            UnitTestUserRequester.waitLength = 1;
         } catch (GameLogicException e) {
             e.printStackTrace();
         }

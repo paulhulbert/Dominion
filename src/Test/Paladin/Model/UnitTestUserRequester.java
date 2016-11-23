@@ -10,7 +10,20 @@ import java.util.ArrayList;
  */
 public class UnitTestUserRequester implements UserRequester {
     @Override
-    public Card askUserToSelectSingleCard(ArrayList<Card> options) {
+    public ArrayList<Card> askUserToSelectManyCards(ArrayList<Card> options, String message, String title, int min, int max) {
+        return null;
+    }
+
+    public static int waitLength = 10000;
+
+    @Override
+    public Card askUserToSelectSingleCard(ArrayList<Card> options, String message, String title) {
+        try {
+            Thread.sleep(waitLength);
+            System.out.println("Next request");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

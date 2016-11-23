@@ -1,5 +1,6 @@
 package Paladin.Model;
 
+import Paladin.Model.Exceptions.GameLogicException;
 import com.google.gson.JsonElement;
 
 /**
@@ -33,8 +34,16 @@ public abstract class Card {
      * @param turn
      * @param choices
      */
-    public void onPlay(Turn turn, JsonElement choices) {
+    public void onPlay(Turn turn, JsonElement choices) throws GameLogicException {
 
+    }
+
+    public void onTrash(Turn turn, JsonElement choices) throws GameLogicException {
+
+    }
+
+    public int getVictoryPointWorth() {
+        return 0;
     }
 
     public int getCost() {

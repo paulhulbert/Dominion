@@ -10,16 +10,18 @@ import java.util.ArrayList;
 public class CardSelecter extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
-    private JPanel mainPanel;
-    private JPanel insidePanel;
     private JComboBox optionBox;
+    private JTextArea messageLabel;
 
     private ArrayList<Card> returnValue;
 
-    public CardSelecter(ArrayList<Card> options) {
+    public CardSelecter(ArrayList<Card> options, String message, String title) {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+        setTitle(title);
+        messageLabel.setText(message);
+        setLocation(700,300);
 
         for (Card card : options) {
             optionBox.addItem(card);
@@ -41,7 +43,7 @@ public class CardSelecter extends JDialog {
     }
 
     public static void main(String[] args) {
-        CardSelecter dialog = new CardSelecter(new ArrayList<Card>());
+        CardSelecter dialog = new CardSelecter(new ArrayList<Card>(), "message", "title");
         dialog.pack();
         dialog.setVisible(true);
         System.exit(0);

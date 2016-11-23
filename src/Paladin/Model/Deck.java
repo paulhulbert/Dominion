@@ -90,4 +90,12 @@ public class Deck {
     public int getDiscardSize() {
         return discardPile.size();
     }
+
+    public ArrayList<Card> getDrawPile() {
+        return drawPile;
+    }
+
+    public ArrayList<Card> getDiscardPile() {
+        return discardPile;
+    }
 }

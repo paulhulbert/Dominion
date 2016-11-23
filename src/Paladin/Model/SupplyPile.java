@@ -11,9 +11,14 @@ import java.util.ArrayList;
  */
 public class SupplyPile {
 
+    /**
+     * Top of deck is last card
+     */
     private ArrayList<Card> cards = new ArrayList<>();
 
     private int maxInDeck = 10;
+
+    private String name;
 
     public SupplyPile(String cardName) {
         generatePile(cardName);
@@ -46,15 +51,35 @@ public class SupplyPile {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
+        name = cards.get(0).getName();
     }
 
 
     public Card getTopCard() {
+        if (cards.isEmpty()) {
+            return null;
+        }
         return cards.get(0);
+    }
+
+    public Card drawCard() {
+        return cards.remove(cards.size()-1);
     }
 
     public boolean removeCard(Card card) {
         return cards.remove(card);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getSize() {
+        return cards.size();
     }
 
     public static void main(String[] args) {
