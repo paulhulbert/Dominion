@@ -1,3 +1,33 @@
+V2:
+
+{
+    "time_created":1133442,
+    "GameID":115,
+    "Player":"Paul",
+    "Details":{
+        "type":"cardSelect",
+        "cards":["513","5",543"]
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+V1:
+
 {
     "time_created":1133442,
     "GameID":115,

@@ -29,6 +29,20 @@ public class MainWindow implements UIInterface{
                 update();
             }
         });
+        joinGameButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int gameID = Integer.parseInt(JOptionPane.showInputDialog("Enter game ID:"));
+                    GameManagerObject.setupGame(false);
+                    GameManagerObject.startGame();
+                } catch (GameLogicException e1) {
+                    e1.printStackTrace();
+                }
+
+                update();
+            }
+        });
     }
 
     public static void main(String[] args) {
@@ -47,7 +61,7 @@ public class MainWindow implements UIInterface{
     private JTextArea currentStatus;
     private JPanel mainPanel;
     private JButton newGameButton;
-
+    private JButton joinGameButton;
 
 
     public void update() {

@@ -1,5 +1,6 @@
 package Paladin.Model.CardTypes;
 
+import Paladin.Controller.Requester;
 import Paladin.Model.*;
 import Paladin.Model.Exceptions.GameLogicException;
 import com.google.gson.JsonElement;
@@ -19,7 +20,7 @@ public class Mine extends Card {
         Constants.cardIdentifiers.put(name, Card.class.getName().replace("Card", "CardTypes." + name));
     }
     public Mine(int ID) {
-        super(1, name, ID);
+        super(5, name, ID);
     }
 
     @Override
@@ -38,7 +39,7 @@ public class Mine extends Card {
             return;
         }
 
-        Card selected = GameManagerObject.userRequester.askUserToSelectSingleCard(options,
+        Card selected = Requester.askUserToSelectSingleCard(turn.currentPlayer, options,
                 "Choose card to mine", "Mine");
 
         turn.currentPlayer.getHand().removeCard(selected);
@@ -59,7 +60,7 @@ public class Mine extends Card {
             return;
         }
 
-        selected = GameManagerObject.userRequester.askUserToSelectSingleCard(options,
+        selected = Requester.askUserToSelectSingleCard(turn.currentPlayer, options,
                 "Choose treasure card to gain, up to " + (selected.getCost() + 3), "Mine");
 
         turn.getCardsGainedThisTurn().add(GameManagerObject.piles.get(selected.getClass().getName()).drawCard());

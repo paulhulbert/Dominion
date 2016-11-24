@@ -8,13 +8,20 @@ import Paladin.View.UIInterface;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Created by paulh on 10/4/2016.
  */
 public class GameManagerObject {
 
+    public static Random seededRandom = new Random();
+
+    public static long seed = -1;
+
     public static boolean gameOver = false;
+
+    public static int gameID = -1;
 
     public static UserRequester userRequester;
     public static UIInterface uiInterface;
@@ -30,13 +37,27 @@ public class GameManagerObject {
 
     public static ArrayList<Card> trash = new ArrayList<>();
 
+    static {
+        DatabaseManager.startup();
+    }
+
+    public static void joinGame(int ID, Player hostPlayer, long seedValue) {
+        gameID = ID;
+        host = hostPlayer;
+        seed = seedValue;
+    }
+
 
     public static void setupGame(boolean isHost) throws GameLogicException {
         Constants.currentCardID = 0;
-        localPlayer = new Player();
+        localPlayer = new Player("Paul");
         if (isHost) {
             host = localPlayer;
+            seed = System.currentTimeMillis();
+
+            gameID = seededRandom.nextInt(100000);
         }
+        seededRandom = new Random(seed);
         players.clear();
         players.add(localPlayer);
 

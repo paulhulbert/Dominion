@@ -1,5 +1,6 @@
 package Paladin.Model.CardTypes;
 
+import Paladin.Controller.Requester;
 import Paladin.Model.*;
 import Paladin.Model.Exceptions.GameLogicException;
 import com.google.gson.JsonElement;
@@ -39,7 +40,7 @@ public class Workshop extends Card {
             return;
         }
 
-        Card selected = GameManagerObject.userRequester.askUserToSelectSingleCard(options,
+        Card selected = Requester.askUserToSelectSingleCard(turn.currentPlayer, options,
                 "Choose card to gain", "Workshop");
 
         turn.getCardsGainedThisTurn().add(GameManagerObject.piles.get(selected.getClass().getName()).drawCard());

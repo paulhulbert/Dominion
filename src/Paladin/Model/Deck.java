@@ -54,6 +54,7 @@ public class Deck {
 
 
     public void shuffleDeck() throws GameLogicException {
+        /*
         if (shuffleSeed.isEmpty()) {
             Collections.shuffle(drawPile);
             //TODO: Fire off SQL message with new deck
@@ -75,6 +76,8 @@ public class Deck {
             drawPile = newDeck;
 
         }
+        */
+        Collections.shuffle(drawPile, GameManagerObject.seededRandom);
     }
 
 

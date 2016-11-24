@@ -1,5 +1,6 @@
 package Paladin.Model.CardTypes;
 
+import Paladin.Controller.Requester;
 import Paladin.Model.*;
 import Paladin.Model.Exceptions.GameLogicException;
 import com.google.gson.JsonElement;
@@ -36,7 +37,7 @@ public class Remodel extends Card {
             return;
         }
 
-        Card selected = GameManagerObject.userRequester.askUserToSelectSingleCard(options,
+        Card selected = Requester.askUserToSelectSingleCard(turn.currentPlayer, options,
                 "Choose card to remodel", "Remodel");
 
         turn.currentPlayer.getHand().removeCard(selected);
@@ -56,7 +57,7 @@ public class Remodel extends Card {
             return;
         }
 
-        selected = GameManagerObject.userRequester.askUserToSelectSingleCard(options,
+        selected = Requester.askUserToSelectSingleCard(turn.currentPlayer, options,
                 "Choose card to gain, up to " + (selected.getCost() + 2), "Remodel");
 
         turn.getCardsGainedThisTurn().add(GameManagerObject.piles.get(selected.getClass().getName()).drawCard());

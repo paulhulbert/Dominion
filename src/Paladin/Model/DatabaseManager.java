@@ -18,6 +18,18 @@ public class DatabaseManager {
 
     private static long lastRefreshID = -1;
 
+    public static void startup() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://204.246.56.27/dominion", "dominion", "La9mT6?92K!G");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public static void main(String[] args) {
         try {
 
@@ -36,12 +48,25 @@ public class DatabaseManager {
         //    addRow("details" + i);
         //}
 
-        for (String s : getNewRows()) {
-            System.out.println(s);
+        //for (String s : getNewRows()) {
+        //    System.out.println(s);
+        //}
+
+        emptyTable();
+
+    }
+
+    public static boolean sendMessage(Message message) {
+        try {
+            Statement stmt = con.createStatement();
+            return stmt.execute("INSERT INTO `dominion`.`actions` " +
+                    "(`time_created`, `GameID`, `Player`, `Details`) " +
+                    "VALUES ( " + message.time_created + ", " + message.GameID + ", '" + message.Player +
+                    "', '" + message.Details + "');");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
-        //emptyTable();
-
+        return false;
     }
 
 

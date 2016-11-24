@@ -4,12 +4,16 @@ import Paladin.Model.Exceptions.GameLogicException;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Queue;
 
 /**
  * Created by paulh on 10/9/2016.
  */
 public class MessageHandler {
+
+    public static Queue<JsonElement> cardSelects = new ArrayDeque<>();
 
 
     /**
@@ -21,17 +25,35 @@ public class MessageHandler {
 
         String type = jsonElement.getAsJsonObject().get("Details").getAsJsonObject().get("type").getAsString();
 
+        if (type.equals("cardSelect")) {
+            if (!jsonElement.getAsJsonObject().get("Player").getAsString().equals(GameManagerObject.localPlayer.getName())) {
+                cardSelects.add(jsonElement);
+            }
+        }
+
         if (type.equals("buy")) {
-            buy(jsonElement);
+            //buy(jsonElement);
         }
 
         if (type.equals("play")) {
-            play(jsonElement);
+            //play(jsonElement);
         }
 
         if (type.equals("shuffle")) {
-            shuffle(jsonElement);
+            //shuffle(jsonElement);
         }
+    }
+
+
+    public static JsonElement getNextCardSelect() {
+        while (cardSelects.isEmpty()) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return cardSelects.remove();
     }
 
     /**
@@ -52,7 +74,7 @@ public class MessageHandler {
 
      *
      * @param jsonElement
-     */
+
     public static void shuffle(JsonElement jsonElement) throws GameLogicException {
         Turn currentTurn = GameManagerObject.turns.get(0);
 
@@ -87,7 +109,7 @@ public class MessageHandler {
 
 
     }
-
+    */
 
     /**
      * Play a card from the players hand with a specified ID

@@ -1,5 +1,6 @@
 package Paladin.Model.CardTypes;
 
+import Paladin.Controller.Requester;
 import Paladin.Model.*;
 import Paladin.Model.Exceptions.GameLogicException;
 import com.google.gson.JsonElement;
@@ -38,7 +39,7 @@ public class Cellar extends Card {
         }
         options.add(null);
 
-        ArrayList<Card> selected = GameManagerObject.userRequester.askUserToSelectManyCards(options,
+        ArrayList<Card> selected = Requester.askUserToSelectManyCards(turn.currentPlayer, options,
                 "Choose cards to discard for cellar", "Cellar", 0, 9999);
 
         for (Card card : selected) {

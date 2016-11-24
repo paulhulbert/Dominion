@@ -1,6 +1,7 @@
 package Paladin.Model;
 
 import Paladin.Controller.DesktopUserRequester;
+import Paladin.Controller.Requester;
 import Paladin.Model.Exceptions.GameLogicException;
 import com.google.gson.JsonElement;
 
@@ -42,7 +43,7 @@ public class Turn {
                     break;
                 }
                 actionCardsInHand.add(null);
-                Card cardToPlay = GameManagerObject.userRequester.askUserToSelectSingleCard(actionCardsInHand,
+                Card cardToPlay = Requester.askUserToSelectSingleCard(currentPlayer, actionCardsInHand,
                         "Play an action card",
                         "Choose Action Card");
                 if (cardToPlay == null) {
@@ -68,7 +69,7 @@ public class Turn {
                     break;
                 }
                 treasureCardsInHand.add(null);
-                Card cardToPlay = GameManagerObject.userRequester.askUserToSelectSingleCard(treasureCardsInHand,
+                Card cardToPlay = Requester.askUserToSelectSingleCard(currentPlayer, treasureCardsInHand,
                         "Play a treasure card",
                         "Choose Treasure Card");
                 if (cardToPlay == null) {
@@ -94,7 +95,7 @@ public class Turn {
                     break;
                 }
                 buyOptions.add(null);
-                Card cardToBuy = GameManagerObject.userRequester.askUserToSelectSingleCard(buyOptions,
+                Card cardToBuy = Requester.askUserToSelectSingleCard(currentPlayer, buyOptions,
                         "Choose a card to buy",
                         "Choose Deck");
                 if (cardToBuy == null) {

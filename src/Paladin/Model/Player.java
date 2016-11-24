@@ -15,7 +15,9 @@ public class Player {
     private Hand hand = new Hand();
 
 
-    public Player() throws GameLogicException {
+    public Player(String name) throws GameLogicException {
+        this.name = name;
+        //TODO:  Card drawing should take place after players are in a list in order to make it the same across network
         for (int i = 0; i < 7; i++) {
             deck.addCardToDiscard(new Copper(Constants.getNewCardID()));
         }
@@ -31,7 +33,7 @@ public class Player {
 
     public static void main(String[] args) {
         try {
-            Player player = new Player();
+            Player player = new Player("Paul");
         } catch (GameLogicException e) {
             e.printStackTrace();
         }
@@ -51,6 +53,6 @@ public class Player {
 
     @Override
     public boolean equals(Object player) {
-        return this.getName() == ((Player) player).getName();
+        return this.getName().equals(((Player) player).getName());
     }
 }
