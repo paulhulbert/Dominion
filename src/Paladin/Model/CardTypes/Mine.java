@@ -63,7 +63,7 @@ public class Mine extends Card {
         selected = Requester.askUserToSelectSingleCard(turn.currentPlayer, options,
                 "Choose treasure card to gain, up to " + (selected.getCost() + 3), "Mine");
 
-        turn.getCardsGainedThisTurn().add(GameManagerObject.piles.get(selected.getClass().getName()).drawCard());
+        turn.currentPlayer.getHand().getCards().add(GameManagerObject.piles.get(selected.getClass().getName()).drawCard());
 
     }
 }
