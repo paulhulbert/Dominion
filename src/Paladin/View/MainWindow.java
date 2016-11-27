@@ -5,6 +5,7 @@ import Paladin.Model.*;
 import Paladin.Model.Exceptions.GameLogicException;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -19,12 +20,20 @@ public class MainWindow implements UIInterface{
         newGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    GameManagerObject.setupGame(true);
-                    GameManagerObject.startGame();
-                } catch (GameLogicException e1) {
-                    e1.printStackTrace();
-                }
+
+                Thread gameThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            GameManagerObject.setupGame(true);
+                        } catch (GameLogicException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }, "Game engine thread");
+
+                gameThread.start();
+
 
                 update();
             }
@@ -32,13 +41,22 @@ public class MainWindow implements UIInterface{
         joinGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    int gameID = Integer.parseInt(JOptionPane.showInputDialog("Enter game ID:"));
-                    GameManagerObject.setupGame(false);
-                    GameManagerObject.startGame();
-                } catch (GameLogicException e1) {
-                    e1.printStackTrace();
-                }
+
+                Thread gameThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        try {
+                            int gameID = Integer.parseInt(JOptionPane.showInputDialog("Enter game ID:"));
+                            GameManagerObject.joinGame(gameID);
+                        } catch (GameLogicException e1) {
+                            e1.printStackTrace();
+                        }
+
+                    }
+                }, "Game engine thread");
+
+                gameThread.start();
 
                 update();
             }
@@ -57,7 +75,7 @@ public class MainWindow implements UIInterface{
     }
 
     private JList<String> decks;
-    private JTextArea currentTurn;
+    private JTextArea currentTurnText;
     private JTextArea currentStatus;
     private JPanel mainPanel;
     private JButton newGameButton;
@@ -65,17 +83,17 @@ public class MainWindow implements UIInterface{
 
 
     public void update() {
-        debugOutput();
+        //debugOutput();
         Player localPlayer = GameManagerObject.localPlayer;
+        if (localPlayer == null || localPlayer.getHand() == null) {
+            return;
+        }
         Hand localHand = localPlayer.getHand();
 
-        ((DefaultListModel)myHand.getModel()).clear();
 
-        for (Card card : localHand.getCards()) {
-            ((DefaultListModel)myHand.getModel()).addElement(card.getName());
-        }
 
-        ((DefaultListModel)decks.getModel()).clear();
+
+        ArrayList<String> pilesStrings = new ArrayList<>();
 
         for (String s : GameManagerObject.piles.keySet()) {
             SupplyPile pile = GameManagerObject.piles.get(s);
@@ -85,16 +103,11 @@ public class MainWindow implements UIInterface{
                 costOfPile = pile.getTopCard().getCost() + "";
             }
             String cardsRemaining = pile.getSize() + "";
-            ((DefaultListModel)decks.getModel()).addElement(nameOfPile + " - Cost: " + costOfPile + " - Remaining: " + cardsRemaining);
+            pilesStrings.add(nameOfPile + " - Cost: " + costOfPile + " - Remaining: " + cardsRemaining);
+
         }
 
         Turn currentTurn = GameManagerObject.turns.get(GameManagerObject.turns.size()-1);
-        currentStatus.setText("Actions: " + currentTurn.getCurrentActions() + "\n" +
-                                "Money: " + currentTurn.getCurrentMoney() + "\n" +
-                                "Buys: " + currentTurn.getCurrentBuys() + "\n" +
-                                "Draw Pile: " + localPlayer.getDeck().getDrawSize() + "\n" +
-                                "Discard: " + localPlayer.getDeck().getDiscardSize());
-
 
         String cardsPlayed = "";
 
@@ -102,7 +115,52 @@ public class MainWindow implements UIInterface{
             cardsPlayed += card.getName() + "\n";
         }
 
-        this.currentTurn.setText(cardsPlayed);
+        final String cardsPlayedFinal = cardsPlayed;
+
+
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    ((DefaultListModel)myHand.getModel()).clear();
+
+                    for (Card card : localHand.getCards()) {
+                        ((DefaultListModel)myHand.getModel()).addElement(card.getName());
+                    }
+
+
+
+                    for (Player player : GameManagerObject.players) {
+                        if (!localPlayer.equals(player)) {
+                            ((DefaultListModel)myHand.getModel()).addElement("---");
+                            ((DefaultListModel)myHand.getModel()).addElement("---");
+                            ((DefaultListModel)myHand.getModel()).addElement("---");
+
+                            for (Card card : player.getHand().getCards()) {
+                                ((DefaultListModel)myHand.getModel()).addElement(card.getName());
+                            }
+                        }
+                    }
+
+
+
+                    ((DefaultListModel)decks.getModel()).clear();
+
+                    for (String s : pilesStrings) {
+                        ((DefaultListModel)decks.getModel()).addElement(s);
+                    }
+
+                    currentStatus.setText("Actions: " + currentTurn.getCurrentActions() + "\n" +
+                            "Money: " + currentTurn.getCurrentMoney() + "\n" +
+                            "Buys: " + currentTurn.getCurrentBuys() + "\n" +
+                            "Draw Pile: " + localPlayer.getDeck().getDrawSize() + "\n" +
+                            "Discard: " + localPlayer.getDeck().getDiscardSize());
+
+                    currentTurnText.setText(cardsPlayedFinal);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
 

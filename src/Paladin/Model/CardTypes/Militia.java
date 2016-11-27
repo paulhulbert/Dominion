@@ -1,10 +1,7 @@
 package Paladin.Model.CardTypes;
 
-import Paladin.Model.Card;
-import Paladin.Model.CardType;
-import Paladin.Model.Constants;
+import Paladin.Model.*;
 import Paladin.Model.Exceptions.GameLogicException;
-import Paladin.Model.Turn;
 import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
@@ -29,5 +26,9 @@ public class Militia extends Card {
         super.onPlay(turn, choices);
         turn.addMoney(2);
         //TODO: make this attack
+
+        FrequentUseCardMethods.forceAllToDiscardDownToX(3);
+
+
     }
 }

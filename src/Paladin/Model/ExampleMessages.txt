@@ -10,6 +10,61 @@ V2:
     }
 }
 
+{
+    "time_created":1133442,
+    "GameID":115,
+    "Player":"Paul",
+    "Details":{
+        "type":"remoteCardSelectRequest",
+        "target":"David",
+        "message":"Choose cards to discard",
+        "title":"Cellar",
+        "uniqueId":"2-3-513-5-543",
+        "cards":["513","5",543"],
+        "min":0,
+        "max":5
+    }
+}
+
+{
+    "time_created":1133442,
+    "GameID":115,
+    "Player":"Paul",
+    "Details":{
+        "type":"remoteCardSelectResponse",
+        "uniqueId":"2-3-513-5-543",
+        "cards":["513","5",543"]
+    }
+}
+
+{
+    "time_created":1133442,
+    "GameID":115,
+    "Player":"Paul",
+    "Details":{
+        "type":"playerJoin"
+    }
+}
+
+{
+    "time_created":1133442,
+    "GameID":115,
+    "Player":"Paul",
+    "Details":{
+        "type":"startTheGameAlready",
+    }
+}
+
+{
+    "time_created":1133442,
+    "GameID":115,
+    "Player":"Paul",
+    "Details":{
+        "type":"createGame",
+        "seed":"123456"
+    }
+}
+
 
 
 

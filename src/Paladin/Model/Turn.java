@@ -5,6 +5,7 @@ import Paladin.Controller.Requester;
 import Paladin.Model.Exceptions.GameLogicException;
 import com.google.gson.JsonElement;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -32,79 +33,69 @@ public class Turn {
     public void playTurn() throws GameLogicException {
 
         while (currentActions > 0 && phase == TurnPhase.ACTION) {
-            if (GameManagerObject.localPlayer.equals(currentPlayer)) {
-                ArrayList<Card> actionCardsInHand = new ArrayList<>();
-                for (Card card : currentPlayer.getHand().getCards()) {
-                    if (Constants.cardTypes.get(card.getName()).contains(CardType.ACTION)) {
-                        actionCardsInHand.add(card);
-                    }
+
+            ArrayList<Card> actionCardsInHand = new ArrayList<>();
+            for (Card card : currentPlayer.getHand().getCards()) {
+                if (Constants.cardTypes.get(card.getName()).contains(CardType.ACTION)) {
+                    actionCardsInHand.add(card);
                 }
-                if (actionCardsInHand.isEmpty()) {
-                    break;
-                }
-                actionCardsInHand.add(null);
-                Card cardToPlay = Requester.askUserToSelectSingleCard(currentPlayer, actionCardsInHand,
-                        "Play an action card",
-                        "Choose Action Card");
-                if (cardToPlay == null) {
-                    break;
-                }
-                playCard(cardToPlay, null);
-            } else {
-                //TODO: Write database reader code
             }
+            if (actionCardsInHand.isEmpty()) {
+                break;
+            }
+            actionCardsInHand.add(null);
+            Card cardToPlay = Requester.askUserToSelectSingleCard(currentPlayer, actionCardsInHand,
+                    "Play an action card",
+                    "Choose Action Card");
+            if (cardToPlay == null) {
+                break;
+            }
+            playCard(cardToPlay, null);
+
             GameManagerObject.uiInterface.update();
         }
         phase = TurnPhase.BUY;
 
         while (phase == TurnPhase.BUY) {
-            if (GameManagerObject.localPlayer.equals(currentPlayer)) {
-                ArrayList<Card> treasureCardsInHand = new ArrayList<>();
-                for (Card card : currentPlayer.getHand().getCards()) {
-                    if (Constants.cardTypes.get(card.getName()).contains(CardType.TREASURE)) {
-                        treasureCardsInHand.add(card);
-                    }
+            ArrayList<Card> treasureCardsInHand = new ArrayList<>();
+            for (Card card : currentPlayer.getHand().getCards()) {
+                if (Constants.cardTypes.get(card.getName()).contains(CardType.TREASURE)) {
+                    treasureCardsInHand.add(card);
                 }
-                if (treasureCardsInHand.isEmpty()) {
-                    break;
-                }
-                treasureCardsInHand.add(null);
-                Card cardToPlay = Requester.askUserToSelectSingleCard(currentPlayer, treasureCardsInHand,
-                        "Play a treasure card",
-                        "Choose Treasure Card");
-                if (cardToPlay == null) {
-                    break;
-                }
-                playCard(cardToPlay, null);
-            } else {
-                //TODO: Write database reader code
             }
+            if (treasureCardsInHand.isEmpty()) {
+                break;
+            }
+            treasureCardsInHand.add(null);
+            Card cardToPlay = Requester.askUserToSelectSingleCard(currentPlayer, treasureCardsInHand,
+                    "Play a treasure card",
+                    "Choose Treasure Card");
+            if (cardToPlay == null) {
+                break;
+            }
+            playCard(cardToPlay, null);
             GameManagerObject.uiInterface.update();
         }
 
         while (phase == TurnPhase.BUY && currentBuys > 0) {
-            if (GameManagerObject.localPlayer.equals(currentPlayer)) {
-                ArrayList<Card> buyOptions = new ArrayList<>();
-                for (String s : GameManagerObject.piles.keySet()) {
-                    SupplyPile pile = GameManagerObject.piles.get(s);
-                    if (pile.getTopCard() != null && pile.getTopCard().getCost() <= currentMoney) {
-                        buyOptions.add(pile.getTopCard());
-                    }
+            ArrayList<Card> buyOptions = new ArrayList<>();
+            for (String s : GameManagerObject.piles.keySet()) {
+                SupplyPile pile = GameManagerObject.piles.get(s);
+                if (pile.getTopCard() != null && pile.getTopCard().getCost() <= currentMoney) {
+                    buyOptions.add(pile.getTopCard());
                 }
-                if (buyOptions.isEmpty()) {
-                    break;
-                }
-                buyOptions.add(null);
-                Card cardToBuy = Requester.askUserToSelectSingleCard(currentPlayer, buyOptions,
-                        "Choose a card to buy",
-                        "Choose Deck");
-                if (cardToBuy == null) {
-                    break;
-                }
-                buyCard(cardToBuy.getClass().getName());
-            } else {
-                //TODO: Write database reader code
             }
+            if (buyOptions.isEmpty()) {
+                break;
+            }
+            buyOptions.add(null);
+            Card cardToBuy = Requester.askUserToSelectSingleCard(currentPlayer, buyOptions,
+                    "Choose a card to buy",
+                    "Choose Deck");
+            if (cardToBuy == null) {
+                break;
+            }
+            buyCard(cardToBuy.getClass().getName());
             GameManagerObject.uiInterface.update();
         }
         phase = TurnPhase.CLEANUP;

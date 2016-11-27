@@ -1,7 +1,11 @@
 package Paladin.Model;
 
+import Paladin.Model.Exceptions.GameLogicException;
 import com.fasterxml.jackson.core.JsonParser;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -18,10 +22,43 @@ public class DatabaseManager {
 
     private static long lastRefreshID = -1;
 
+    private static class Refresher extends Thread {
+        public Refresher() {
+            super("Database Refresher");
+        }
+
+        @Override
+        public void run() {
+            super.run();
+
+            while (true) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                refreshDatabase();
+            }
+
+            /*Timer timer = new Timer(1000, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    refreshDatabase();
+                }
+            });
+            timer.start();*/
+        }
+    }
+
     public static void startup() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://204.246.56.27/dominion", "dominion", "La9mT6?92K!G");
+
+            //TODO:  Remove this empty tables later
+            //emptyTable();
+
+            new Refresher().start();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -70,7 +107,7 @@ public class DatabaseManager {
     }
 
 
-    private static void emptyTable() {
+    public static void emptyTable() {
         try {
             Statement stmt = con.createStatement();
             stmt.execute("DELETE FROM `dominion`.`actions` WHERE ID > -1;");
@@ -91,6 +128,24 @@ public class DatabaseManager {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static void refreshDatabase() {
+        try {
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM actions WHERE ID > " +
+                    lastRefreshID + " AND GameID = " + GameManagerObject.gameID);
+
+            while (rs.next()) {
+                long newRecentID = rs.getLong(1);
+                lastRefreshID = newRecentID;
+                MessageHandler.handleMessage(new Message(rs.getLong(2), rs.getInt(3), rs.getString(4), rs.getString(5)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (GameLogicException e) {
+            e.printStackTrace();
+        }
     }
 
 

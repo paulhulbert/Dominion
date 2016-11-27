@@ -1,11 +1,13 @@
 package Paladin.Model;
 
 import Paladin.Model.Exceptions.GameLogicException;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Queue;
 
 /**
@@ -14,6 +16,12 @@ import java.util.Queue;
 public class MessageHandler {
 
     public static Queue<JsonElement> cardSelects = new ArrayDeque<>();
+    public static Queue<String> playerJoins = new ArrayDeque<>();
+
+    public static HashMap<Integer, Long> seedMap = new HashMap<>();
+
+    public static HashMap<String, JsonElement> remoteRequests = new HashMap<>();
+
 
 
     /**
@@ -21,14 +29,79 @@ public class MessageHandler {
      * @param message
      */
     public static void handleMessage(Message message) throws GameLogicException {
-        JsonElement jsonElement = new JsonParser().parse(message.Details);
+        JsonElement jsonElement = new JsonParser().parse("{" + message.Details + "}");
+
+        System.out.println("Got a message: " + message.Details);
 
         String type = jsonElement.getAsJsonObject().get("Details").getAsJsonObject().get("type").getAsString();
 
         if (type.equals("cardSelect")) {
-            if (!jsonElement.getAsJsonObject().get("Player").getAsString().equals(GameManagerObject.localPlayer.getName())) {
+            if (!message.Player.equals(GameManagerObject.localPlayer.getName())) {
                 cardSelects.add(jsonElement);
             }
+        }
+
+        if (type.equals("remoteCardSelectResponse")) {
+            remoteRequests.put(jsonElement.getAsJsonObject().get("Details").getAsJsonObject().get("uniqueId").getAsString(),
+                    jsonElement);
+        }
+
+        if (type.equals("remoteCardSelectRequest")) {
+
+            if (jsonElement.getAsJsonObject().get("Details").getAsJsonObject().get("target").
+                    getAsString().equals(GameManagerObject.localPlayer.getName())) {
+
+
+                JsonArray cards = jsonElement.getAsJsonObject().get("Details").getAsJsonObject().get("cards").getAsJsonArray();
+
+                ArrayList<Card> options = new ArrayList<>();
+
+                for (JsonElement element : cards) {
+                    int cardID = element.getAsInt();
+                    options.add(Constants.cards.get(cardID));
+                }
+
+                String messageText = jsonElement.getAsJsonObject().get("Details").getAsJsonObject().get("message").getAsString();
+                String title = jsonElement.getAsJsonObject().get("Details").getAsJsonObject().get("title").getAsString();
+                int min = jsonElement.getAsJsonObject().get("Details").getAsJsonObject().get("min").getAsInt();
+                int max = jsonElement.getAsJsonObject().get("Details").getAsJsonObject().get("max").getAsInt();
+
+                ArrayList<Card> selected = GameManagerObject.userRequester.askUserToSelectManyCards(options, messageText, title, min, max);
+
+
+                String cardsSelected = "[";
+
+
+                for (Card card : selected) {
+                    cardsSelected += "\"" + card.getID() + "\",";
+                }
+
+                cardsSelected = cardsSelected.substring(0,cardsSelected.length() - 2) + "\"]";
+
+                Message newMessage = new Message(System.currentTimeMillis(),
+                        GameManagerObject.gameID, GameManagerObject.currentPlayer.getName(), "");
+                newMessage.put("type", "remoteCardSelectResponse");
+                newMessage.put("uniqueId", jsonElement.getAsJsonObject().get("Details").getAsJsonObject().get("uniqueId").getAsString());
+                newMessage.putArray("cards", cardsSelected);
+                DatabaseManager.sendMessage(newMessage);
+
+            }
+        }
+
+        if (type.equals("playerJoin")) {
+            playerJoins.add(message.Player);
+        }
+
+        if (type.equals("startTheGameAlready")) {
+            GameManagerObject.started = true;
+        }
+
+        if (type.equals("createGame")) {
+            int gameID = message.GameID;
+            long seed = jsonElement.getAsJsonObject().get("Details").getAsJsonObject().get("seed").getAsLong();
+
+            seedMap.put(gameID, seed);
+
         }
 
         if (type.equals("buy")) {
@@ -54,6 +127,10 @@ public class MessageHandler {
             }
         }
         return cardSelects.remove();
+    }
+
+    public static Queue<String> getPlayerJoins() {
+        return playerJoins;
     }
 
     /**

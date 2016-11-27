@@ -3,6 +3,7 @@ package Paladin.Controller;
 import Paladin.Model.Card;
 import Paladin.View.CardSelecter;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -27,6 +28,9 @@ public class DesktopUserRequester implements UserRequester {
                 selectedString += card.getName() + ", ";
             }
             selectedString = selectedString.substring(0, selectedString.length() - 2);
+            if (selections.isEmpty()) {
+                selectedString = "";
+            }
             Card selection = askUserToSelectSingleCard(tempOptions, message + selectedString, title);
             if (selection == null) {
                 if (selections.size() >= min) {
@@ -46,9 +50,18 @@ public class DesktopUserRequester implements UserRequester {
     @Override
     public Card askUserToSelectSingleCard(ArrayList<Card> options, String message, String title) {
         int originalSize = options.size();
-        CardSelecter dialog = new CardSelecter(options, message, title);
-        dialog.pack();
-        dialog.setVisible(true);
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    CardSelecter dialog = new CardSelecter(options, message, title);
+                    dialog.pack();
+                    dialog.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
 
         while (options.size() == originalSize) {
             try {

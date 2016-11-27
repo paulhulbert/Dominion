@@ -4,11 +4,13 @@ import Paladin.Controller.UserRequester;
 import Paladin.Model.CardTypes.*;
 import Paladin.Model.Exceptions.GameLogicException;
 import Paladin.View.UIInterface;
+import Paladin.View.WaitingScreen;
+import Paladin.View.WaitingScreenLauncher;
 
+import javax.swing.*;
+import java.awt.*;
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by paulh on 10/4/2016.
@@ -25,8 +27,11 @@ public class GameManagerObject {
 
     public static UserRequester userRequester;
     public static UIInterface uiInterface;
+    public static UIInterface waitingScreen;
 
-    public static Player host;
+    public static Queue<String> playerJoins = new ArrayDeque<>();
+
+    public static boolean localIsHost;
     public static Player localPlayer;
     public static Player currentPlayer;
     public static ArrayList<Player> players = new ArrayList<>();
@@ -37,29 +42,47 @@ public class GameManagerObject {
 
     public static ArrayList<Card> trash = new ArrayList<>();
 
+    public static boolean started = false;
+
     static {
         DatabaseManager.startup();
     }
 
-    public static void joinGame(int ID, Player hostPlayer, long seedValue) {
+    public static void joinGame(int ID) throws GameLogicException {
         gameID = ID;
-        host = hostPlayer;
-        seed = seedValue;
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        seed = MessageHandler.seedMap.get(ID);
+        setupGame(false);
     }
 
 
     public static void setupGame(boolean isHost) throws GameLogicException {
+        String playerName = JOptionPane.showInputDialog("Enter a username:");
         Constants.currentCardID = 0;
-        localPlayer = new Player("Paul");
+        //localPlayer = new Player("Paul");
+        localIsHost = isHost;
         if (isHost) {
-            host = localPlayer;
+            DatabaseManager.emptyTable();
             seed = System.currentTimeMillis();
 
             gameID = seededRandom.nextInt(100000);
+
+            String details = "\"Details\":{ \"type\":\"createGame\", \"seed\":\"" + seed + "\" }";
+            Message newMessage = new Message(System.currentTimeMillis(),
+                    GameManagerObject.gameID, playerName, details);
+            DatabaseManager.sendMessage(newMessage);
+
+
         }
         seededRandom = new Random(seed);
         players.clear();
-        players.add(localPlayer);
+        //players.add(localPlayer);
 
         piles.clear();
 
@@ -83,7 +106,65 @@ public class GameManagerObject {
         turns.clear();
 
 
+
         System.out.println("Game is set up.");
+
+        waitToStartGame(playerName);
+    }
+
+
+    public static void waitToStartGame(String playerName) throws GameLogicException {
+
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    Thread thread = new Thread(new WaitingScreenLauncher(), "Waiting screen thread");
+                    thread.start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        playerJoins = new ArrayDeque<>();
+
+        String details = "\"Details\":{ \"type\":\"playerJoin\" }";
+        Message newMessage = new Message(System.currentTimeMillis(),
+                GameManagerObject.gameID, playerName, details);
+        DatabaseManager.sendMessage(newMessage);
+
+        while (!started) {
+            if (MessageHandler.getPlayerJoins().isEmpty()) {
+                try {
+
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                playerJoins.add(MessageHandler.getPlayerJoins().remove());
+            }
+            waitingScreen.update();
+        }
+
+        for (String name : playerJoins) {
+            Player player = new Player(name);
+            if (name.equals(playerName)) {
+                localPlayer = player;
+            }
+            players.add(player);
+        }
+
+
+
+        startGame();
+
     }
 
 
@@ -92,6 +173,7 @@ public class GameManagerObject {
         Turn turn = new Turn(currentPlayer);
         turns.add(turn);
         uiInterface.update();
+
         turn.playTurn();
     }
 
@@ -107,10 +189,21 @@ public class GameManagerObject {
         players.add(player);
     }
 
-    public static void addHost(Player player) {
-        players.add(player);
-        host = player;
+    public static ArrayList<Player> getPlayersAsideFromSpecifiedInOrder(Player player) {
+        ArrayList<Player> playerList = new ArrayList<>();
+        int playerIndex = players.indexOf(player);
+
+        for (int i = playerIndex + 1; i < players.size(); i++) {
+            playerList.add(players.get(i));
+        }
+
+        for (int i = 0; i < playerIndex; i++) {
+            playerList.add(players.get(i));
+        }
+
+        return playerList;
     }
+
 
     public static Turn getCurrentTurn() {
         return turns.get(turns.size()-1);
@@ -128,6 +221,7 @@ public class GameManagerObject {
         currentPlayer = players.get(0);
         turns.add(new Turn(currentPlayer));
         uiInterface.update();
+
         turns.get(turns.size() - 1).playTurn();
 
     }
