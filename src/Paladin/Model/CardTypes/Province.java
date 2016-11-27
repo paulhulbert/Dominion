@@ -19,7 +19,7 @@ public class Province extends Card {
         Constants.cardIdentifiers.put(name, Card.class.getName().replace("Card", "CardTypes." + name));
     }
     public Province(int ID) {
-        super(8, name, ID);
+        super(0, name, ID);
     }
 
     @Override

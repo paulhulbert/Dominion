@@ -23,7 +23,6 @@ public class Deck {
 
     private ArrayList<Card> discardPile = new ArrayList<>();
 
-    private ArrayList<Integer> shuffleSeed = new ArrayList<>();
 
     public void addCardToDiscard(Card card) {
         discardPile.add(card);
@@ -54,36 +53,10 @@ public class Deck {
 
 
     public void shuffleDeck() throws GameLogicException {
-        /*
-        if (shuffleSeed.isEmpty()) {
-            Collections.shuffle(drawPile);
-            //TODO: Fire off SQL message with new deck
-        } else {
-            ArrayList<Card> newDeck = new ArrayList<>();
-            for (Integer i : shuffleSeed) {
-                if (drawPile.contains(Constants.cards.get(i))) {
-                    newDeck.add(Constants.cards.get(i));
-                    drawPile.remove(Constants.cards.get(i));
-                } else {
-                    throw new GameLogicException("Tried to seed shuffle using a card not in the player's discard pile");
-                }
-            }
-
-            if (!drawPile.isEmpty()) {
-                throw new GameLogicException("Tried to seed shuffle but had more cards in draw than in seed");
-            }
-
-            drawPile = newDeck;
-
-        }
-        */
         Collections.shuffle(drawPile, GameManagerObject.seededRandom);
     }
 
 
-    public void setShuffleSeed(ArrayList<Integer> seed) {
-        shuffleSeed = seed;
-    }
 
 
     public int getDrawSize() {

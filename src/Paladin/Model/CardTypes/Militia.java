@@ -25,7 +25,6 @@ public class Militia extends Card {
     public void onPlay(Turn turn, JsonElement choices) throws GameLogicException {
         super.onPlay(turn, choices);
         turn.addMoney(2);
-        //TODO: make this attack
 
         FrequentUseCardMethods.forceAllToDiscardDownToX(3);
 

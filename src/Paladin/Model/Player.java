@@ -17,7 +17,6 @@ public class Player {
 
     public Player(String name) throws GameLogicException {
         this.name = name;
-        //TODO:  Card drawing should take place after players are in a list in order to make it the same across network
         for (int i = 0; i < 7; i++) {
             deck.addCardToDiscard(new Copper(Constants.getNewCardID()));
         }

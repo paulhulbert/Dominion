@@ -213,6 +213,27 @@ public class GameManagerObject {
         if (gameOver) {
             return;
         }
+        if (checkGameOverConditions()) {
+            gameOver = true;
+
+            int highest = -99;
+            Player highestPlayer = null;
+
+            String scores = "";
+
+            for (Player player : players) {
+                scores += player.getName() + ": " + getScore(player) + "  -  ";
+                if (getScore(player) > highest) {
+                    highest = getScore(player);
+                    highestPlayer = player;
+                }
+            }
+            JOptionPane.showMessageDialog(null, "Game over.  " + highestPlayer.getName() + " wins!" +
+                        "            " + scores);
+
+            return;
+        }
+
         if (players.isEmpty()) {
             throw new GameLogicException("Players list was empty");
         }
@@ -226,9 +247,43 @@ public class GameManagerObject {
 
     }
 
+    public static int getScore(Player player) {
+        int total = 0;
+
+        for (Card card : player.getHand().getCards()) {
+            total += card.getVictoryPointWorth();
+        }
+        for (Card card : player.getDeck().getDiscardPile()) {
+            total += card.getVictoryPointWorth();
+        }
+        for (Card card : player.getDeck().getDrawPile()) {
+            total += card.getVictoryPointWorth();
+        }
+        return total;
+
+    }
+
+    public static boolean checkGameOverConditions() {
+        if (piles.get("Paladin.Model.CardTypes.Province").getSize() == 0) {
+            return true;
+        }
+
+        int supplyPilesEmpty = 0;
+        for (String key : piles.keySet()) {
+            if (piles.get(key).getSize() == 0 && piles.get(key).inSupply) {
+                supplyPilesEmpty++;
+            }
+        }
+
+        if (supplyPilesEmpty >= 3) {
+            return true;
+        }
+
+        return false;
+    }
+
     public static void addMessage(Message message) throws GameLogicException {
         MessageHandler.handleMessage(message);
-        //TODO:  Add database code here
     }
 
 

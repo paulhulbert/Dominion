@@ -55,8 +55,6 @@ public class DatabaseManager {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://204.246.56.27/dominion", "dominion", "La9mT6?92K!G");
 
-            //TODO:  Remove this empty tables later
-            //emptyTable();
 
             new Refresher().start();
         } catch (ClassNotFoundException e) {

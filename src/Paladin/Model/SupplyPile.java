@@ -16,6 +16,8 @@ public class SupplyPile {
      */
     private ArrayList<Card> cards = new ArrayList<>();
 
+    public static boolean inSupply = true;
+
     private int maxInDeck = 10;
 
     private String name;
