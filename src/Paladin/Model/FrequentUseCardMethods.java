@@ -9,21 +9,22 @@ import java.util.ArrayList;
  */
 public class FrequentUseCardMethods {
 
-    public static void forceAllToDiscardDownToX(int X) {
-        ArrayList<Player> players = GameManagerObject.getPlayersAsideFromSpecifiedInOrder(GameManagerObject.currentPlayer);
+    public static void forcePlayerToDiscardDownToX(int X, Player player) {
 
-        for (Player player : players) {
+        int numberToDiscard = player.getHand().getCards().size() - X;
 
-            int numberToDiscard = player.getHand().getCards().size() - X;
-
-            ArrayList<Card> selected = Requester.askUserToSelectManyCards(player, player.getHand().getCards(),
-                    "Discard down to three cards, courtesy of " + GameManagerObject.currentPlayer.getName(), "Militia", numberToDiscard, numberToDiscard);
-
-            for (Card card : selected) {
-                player.getDeck().addCardToDiscard(card);
-                player.getHand().removeCard(card);
-            }
-
+        if (numberToDiscard <= 0) {
+            return;
         }
+
+        ArrayList<Card> selected = Requester.askUserToSelectManyCards(player, player.getHand().getCards(),
+                "Discard down to three cards, courtesy of " + GameManagerObject.currentPlayer.getName(), "Militia", numberToDiscard, numberToDiscard);
+
+        for (Card card : selected) {
+            player.getDeck().addCardToDiscard(card);
+            player.getHand().removeCard(card);
+        }
+
+
     }
 }

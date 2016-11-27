@@ -25,8 +25,23 @@ public class Militia extends Card {
     public void onPlay(Turn turn, JsonElement choices) throws GameLogicException {
         super.onPlay(turn, choices);
         turn.addMoney(2);
+        ArrayList<Player> players = GameManagerObject.getPlayersAsideFromSpecifiedInOrder(GameManagerObject.currentPlayer);
 
-        FrequentUseCardMethods.forceAllToDiscardDownToX(3);
+        for (Player player : players) {
+
+            boolean blocked = false;
+            for (Card card : player.getHand().getCards()) {
+                if (card instanceof Moat) {
+                    blocked = true;
+                    break;
+                }
+            }
+
+            if (!blocked) {
+                FrequentUseCardMethods.forcePlayerToDiscardDownToX(3, player);
+            }
+
+        }
 
 
     }

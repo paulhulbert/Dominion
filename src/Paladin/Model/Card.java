@@ -46,6 +46,10 @@ public abstract class Card {
         return 0;
     }
 
+    public void reactToAttack(Card causedBy, Player ownerOfReaction) {
+
+    }
+
     public int getCost() {
         return cost;
     }
