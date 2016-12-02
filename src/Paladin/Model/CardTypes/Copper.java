@@ -7,7 +7,6 @@ import Paladin.Model.CardType;
 import Paladin.Model.Constants;
 import Paladin.Model.Exceptions.GameLogicException;
 import Paladin.Model.Turn;
-import com.google.gson.JsonElement;
 
 /**
  * Created by paulh on 10/8/2016.
@@ -28,8 +27,8 @@ public class Copper extends Card {
     }
 
     @Override
-    public void onPlay(Turn turn, JsonElement choices) throws GameLogicException {
-        super.onPlay(turn, choices);
+    public void onPlay(Turn turn) throws GameLogicException {
+        super.onPlay(turn);
         turn.addMoney(1);
     }
 }

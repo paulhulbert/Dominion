@@ -4,12 +4,10 @@ import Paladin.Controller.UserRequester;
 import Paladin.Model.CardTypes.*;
 import Paladin.Model.Exceptions.GameLogicException;
 import Paladin.View.UIInterface;
-import Paladin.View.WaitingScreen;
 import Paladin.View.WaitingScreenLauncher;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Connection;
 import java.util.*;
 
 /**
@@ -94,6 +92,7 @@ public class GameManagerObject {
         addPile(Cellar.class.getName(), 10);
         addPile(Moat.class.getName(), 10);
         addPile(Workshop.class.getName(), 10);
+        addPile(Chancellor.class.getName(), 10);
         addPile(Remodel.class.getName(), 10);
         addPile(Duchy.class.getName(), 8);
         addPile(Gold.class.getName(), 30);
@@ -251,13 +250,13 @@ public class GameManagerObject {
         int total = 0;
 
         for (Card card : player.getHand().getCards()) {
-            total += card.getVictoryPointWorth();
+            total += card.getVictoryPointWorth(player);
         }
         for (Card card : player.getDeck().getDiscardPile()) {
-            total += card.getVictoryPointWorth();
+            total += card.getVictoryPointWorth(player);
         }
         for (Card card : player.getDeck().getDrawPile()) {
-            total += card.getVictoryPointWorth();
+            total += card.getVictoryPointWorth(player);
         }
         return total;
 

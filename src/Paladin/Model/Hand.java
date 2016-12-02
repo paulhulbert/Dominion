@@ -37,4 +37,19 @@ public class Hand {
     public boolean contains(Card card) {
         return cards.contains(card);
     }
+
+    public String toString() {
+
+        if (cards.isEmpty()) {
+            return "";
+        }
+
+        String string = cards.get(0).toString();
+
+        for (int i = 1; i < cards.size(); i++) {
+            string += ", " + cards.get(i);
+        }
+
+        return string;
+    }
 }

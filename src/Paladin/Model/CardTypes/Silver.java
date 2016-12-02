@@ -5,7 +5,6 @@ import Paladin.Model.CardType;
 import Paladin.Model.Constants;
 import Paladin.Model.Exceptions.GameLogicException;
 import Paladin.Model.Turn;
-import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 
@@ -28,8 +27,8 @@ public class Silver extends Card {
     }
 
     @Override
-    public void onPlay(Turn turn, JsonElement choices) throws GameLogicException {
-        super.onPlay(turn, choices);
+    public void onPlay(Turn turn) throws GameLogicException {
+        super.onPlay(turn);
         turn.addMoney(2);
     }
 }

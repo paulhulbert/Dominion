@@ -3,6 +3,7 @@ package Paladin.Model.CardTypes;
 import Paladin.Model.Card;
 import Paladin.Model.CardType;
 import Paladin.Model.Constants;
+import Paladin.Model.Player;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,7 @@ public class Curse extends Card {
     }
 
     @Override
-    public int getVictoryPointWorth() {
-        return super.getVictoryPointWorth() - 1;
+    public int getVictoryPointWorth(Player owner) {
+        return super.getVictoryPointWorth(owner) - 1;
     }
 }

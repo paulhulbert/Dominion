@@ -10,6 +10,11 @@ import java.util.ArrayList;
  */
 public class UnitTestUserRequester implements UserRequester {
     @Override
+    public String askUserToSelectString(ArrayList<String> options, String message, String title) {
+        return null;
+    }
+
+    @Override
     public ArrayList<Card> askUserToSelectManyCards(ArrayList<Card> options, String message, String title, int min, int max) {
         return null;
     }

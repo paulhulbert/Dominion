@@ -17,4 +17,6 @@ public interface UserRequester {
     ArrayList<Card> askUserToSelectManyCards(ArrayList<Card> options, String message, String title, int min, int max);
 
     Card askUserToPlayTreasure(ArrayList<Card> options);
+
+    String askUserToSelectString(ArrayList<String> options, String message, String title);
 }

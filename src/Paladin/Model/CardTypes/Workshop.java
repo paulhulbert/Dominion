@@ -3,7 +3,6 @@ package Paladin.Model.CardTypes;
 import Paladin.Controller.Requester;
 import Paladin.Model.*;
 import Paladin.Model.Exceptions.GameLogicException;
-import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 
@@ -24,8 +23,8 @@ public class Workshop extends Card {
     }
 
     @Override
-    public void onPlay(Turn turn, JsonElement choices) throws GameLogicException {
-        super.onPlay(turn, choices);
+    public void onPlay(Turn turn) throws GameLogicException {
+        super.onPlay(turn);
 
 
         ArrayList<Card> options = new ArrayList<>();

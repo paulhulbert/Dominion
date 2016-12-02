@@ -1,7 +1,8 @@
 package Paladin.Controller;
 
 import Paladin.Model.Card;
-import Paladin.View.CardSelecter;
+import Paladin.View.CardSelector;
+import Paladin.View.StringSelector;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class DesktopUserRequester implements UserRequester {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    CardSelecter dialog = new CardSelecter(options, message, title);
+                    CardSelector dialog = new CardSelector(options, message, title);
                     dialog.pack();
                     dialog.setVisible(true);
                 } catch (Exception e) {
@@ -72,6 +73,36 @@ public class DesktopUserRequester implements UserRequester {
         }
 
         Card selection = options.remove(originalSize);
+
+
+        return selection;
+    }
+
+    @Override
+    public String askUserToSelectString(ArrayList<String> options, String message, String title) {
+        int originalSize = options.size();
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    StringSelector dialog = new StringSelector(options, message, title);
+                    dialog.pack();
+                    dialog.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+        while (options.size() == originalSize) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        String selection = options.remove(originalSize);
 
 
         return selection;

@@ -1,7 +1,6 @@
 package Paladin.Model;
 
 import Paladin.Model.Exceptions.GameLogicException;
-import com.google.gson.JsonElement;
 
 /**
  * Created by paulh on 10/4/2016.
@@ -32,17 +31,21 @@ public abstract class Card {
      * is null, and if it is, they will make all their requests to the UserRequester, and record the responses to be
      * sent to the database.  If it is not null, the cards will take their responses from the choices parameter.
      * @param turn
-     * @param choices
+     *
      */
-    public void onPlay(Turn turn, JsonElement choices) throws GameLogicException {
+    public void onPlay(Turn turn) throws GameLogicException {
 
     }
 
-    public void onTrash(Turn turn, JsonElement choices) throws GameLogicException {
+    public void onTrash(Turn turn) throws GameLogicException {
 
     }
 
-    public int getVictoryPointWorth() {
+    public void onDiscard() {
+
+    }
+
+    public int getVictoryPointWorth(Player owner) {
         return 0;
     }
 

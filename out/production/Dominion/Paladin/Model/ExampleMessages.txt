@@ -15,12 +15,37 @@ V2:
     "GameID":115,
     "Player":"Paul",
     "Details":{
+        "type":"remoteStringSelectRequest",
+        "target":"David",
+        "message":"What do you want to do?",
+        "title":"Title of box",
+        "uniqueId":"2-3-D-D-T",
+        "options":["Discard","Draw","Trash"]
+    }
+}
+
+{
+    "time_created":1133442,
+    "GameID":115,
+    "Player":"Paul",
+    "Details":{
+        "type":"remoteStringSelectResponse",
+        "uniqueId":"2-3-D-D-T",
+        "selected":["Draw"]
+    }
+}
+
+{
+    "time_created":1133442,
+    "GameID":115,
+    "Player":"Paul",
+    "Details":{
         "type":"remoteCardSelectRequest",
         "target":"David",
         "message":"Choose cards to discard",
         "title":"Cellar",
         "uniqueId":"2-3-513-5-543",
-        "cards":["513","5",543"],
+        "cards":["513","5","543"],
         "min":0,
         "max":5
     }
@@ -33,7 +58,7 @@ V2:
     "Details":{
         "type":"remoteCardSelectResponse",
         "uniqueId":"2-3-513-5-543",
-        "cards":["513","5",543"]
+        "cards":["513","5","543"]
     }
 }
 

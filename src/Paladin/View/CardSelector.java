@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class CardSelecter extends JDialog {
+public class CardSelector extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JComboBox optionBox;
@@ -15,7 +15,7 @@ public class CardSelecter extends JDialog {
 
     private ArrayList<Card> returnValue;
 
-    public CardSelecter(ArrayList<Card> options, String message, String title) {
+    public CardSelector(ArrayList<Card> options, String message, String title) {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -43,7 +43,7 @@ public class CardSelecter extends JDialog {
     }
 
     public static void main(String[] args) {
-        CardSelecter dialog = new CardSelecter(new ArrayList<Card>(), "message", "title");
+        CardSelector dialog = new CardSelector(new ArrayList<Card>(), "message", "title");
         dialog.pack();
         dialog.setVisible(true);
         System.exit(0);

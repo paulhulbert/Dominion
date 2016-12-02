@@ -28,6 +28,11 @@ public class Deck {
         discardPile.add(card);
     }
 
+    public void discardCard(Card card) {
+        addCardToDiscard(card);
+        card.onDiscard();
+    }
+
     public void addCardToTopOfDrawPile(Card card) {
         drawPile.add(card);
     }

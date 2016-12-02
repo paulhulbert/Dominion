@@ -8,6 +8,7 @@ public enum CardType {
     TREASURE,
     VICTORY,
     REACTION,
+    ATTACK,
     RUINS,
     PRIZE
 }

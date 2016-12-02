@@ -2,7 +2,6 @@ package Paladin.Model.CardTypes;
 
 import Paladin.Model.*;
 import Paladin.Model.Exceptions.GameLogicException;
-import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 
@@ -14,6 +13,7 @@ public class Militia extends Card {
     static {
         ArrayList<CardType> cardTypes = new ArrayList<>();
         cardTypes.add(CardType.ACTION);
+        cardTypes.add(CardType.ATTACK);
         Constants.cardTypes.put(name, cardTypes);
         Constants.cardIdentifiers.put(name, Card.class.getName().replace("Card", "CardTypes." + name));
     }
@@ -22,8 +22,8 @@ public class Militia extends Card {
     }
 
     @Override
-    public void onPlay(Turn turn, JsonElement choices) throws GameLogicException {
-        super.onPlay(turn, choices);
+    public void onPlay(Turn turn) throws GameLogicException {
+        super.onPlay(turn);
         turn.addMoney(2);
         ArrayList<Player> players = GameManagerObject.getPlayersAsideFromSpecifiedInOrder(GameManagerObject.currentPlayer);
 

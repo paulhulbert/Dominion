@@ -1,11 +1,8 @@
 package Paladin.Model;
 
-import Paladin.Controller.DesktopUserRequester;
 import Paladin.Controller.Requester;
 import Paladin.Model.Exceptions.GameLogicException;
-import com.google.gson.JsonElement;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -50,7 +47,7 @@ public class Turn {
             if (cardToPlay == null) {
                 break;
             }
-            playCard(cardToPlay, null);
+            playCard(cardToPlay);
 
             GameManagerObject.uiInterface.update();
         }
@@ -73,7 +70,7 @@ public class Turn {
             if (cardToPlay == null) {
                 break;
             }
-            playCard(cardToPlay, null);
+            playCard(cardToPlay);
             GameManagerObject.uiInterface.update();
         }
 
@@ -104,12 +101,12 @@ public class Turn {
     }
 
 
-    public void trashCard(Card card, JsonElement choices) throws GameLogicException {
+    public void trashCard(Card card) throws GameLogicException {
         if (!currentPlayer.getHand().contains(card)) {
             throw new GameLogicException("Attempted to trash card not in hand");
         }
 
-        card.onTrash(this, choices);
+        card.onTrash(this);
 
         currentPlayer.getHand().removeCard(card);
 
@@ -117,7 +114,7 @@ public class Turn {
     }
 
 
-    public void playCard(Card card, JsonElement choices) throws GameLogicException {
+    public void playCard(Card card) throws GameLogicException {
         if (phase == TurnPhase.ACTION && currentActions <= 0) {
             throw new GameLogicException("Not enough actions.");
         }
@@ -127,7 +124,7 @@ public class Turn {
 
         cardsPlayedThisTurn.add(card);
         currentPlayer.getHand().removeCard(card);
-        card.onPlay(this, choices);
+        card.onPlay(this);
 
         if (phase == TurnPhase.ACTION) {
             currentActions--;
@@ -155,11 +152,6 @@ public class Turn {
 
         return true;
 
-    }
-
-    public void discardCard(Card card) {
-        currentPlayer.getDeck().addCardToDiscard(card);
-        currentPlayer.getHand().removeCard(card);
     }
 
     public void drawCard() throws GameLogicException {

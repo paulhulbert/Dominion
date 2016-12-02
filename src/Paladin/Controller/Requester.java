@@ -12,6 +12,60 @@ import java.util.ArrayList;
 public class Requester {
 
 
+    public static String askUserToSelectString(Player target, ArrayList<String> options, String message, String title) {
+        String uniqueId = "" + GameManagerObject.turns.size() + "-" +
+                GameManagerObject.getCurrentTurn().getCardsPlayedThisTurn().size();
+
+        String stringOptions = "[";
+
+
+        for (String string : options) {
+            if (!string.equals("")) {
+                uniqueId += "-" + string.charAt(0);
+            } else {
+                uniqueId += "-";
+            }
+            stringOptions += "\"" + string + "\",";
+        }
+
+        stringOptions = stringOptions.substring(0,stringOptions.length() - 2) + "\"]";
+
+        //You are asking someone else
+        if (GameManagerObject.currentPlayer.equals(GameManagerObject.localPlayer)) {
+            Message newMessage = new Message(System.currentTimeMillis(),
+                    GameManagerObject.gameID, GameManagerObject.currentPlayer.getName(), "");
+            newMessage.put("type", "remoteStringSelectRequest");
+            newMessage.put("target", target.getName());
+            newMessage.put("message", message);
+            newMessage.put("title", title);
+            newMessage.put("uniqueId", uniqueId);
+            newMessage.putArray("options", stringOptions);
+            DatabaseManager.sendMessage(newMessage);
+        }
+
+
+        while (!MessageHandler.remoteRequests.containsKey(uniqueId)) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        JsonElement jsonElement = MessageHandler.remoteRequests.get(uniqueId);
+
+        JsonArray selectedArray = jsonElement.getAsJsonObject().get("Details").getAsJsonObject().get("selected").getAsJsonArray();
+
+        ArrayList<String> selected = new ArrayList<>();
+
+        for (JsonElement element : selectedArray) {
+            selected.add(element.getAsString());
+        }
+
+        return selected.get(0);
+    }
+
+
 
     public static Card askUserToSelectSingleCard(Player target, ArrayList<Card> options, String message, String title) {
         /*

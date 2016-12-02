@@ -21,7 +21,7 @@ public class FrequentUseCardMethods {
                 "Discard down to three cards, courtesy of " + GameManagerObject.currentPlayer.getName(), "Militia", numberToDiscard, numberToDiscard);
 
         for (Card card : selected) {
-            player.getDeck().addCardToDiscard(card);
+            player.getDeck().discardCard(card);
             player.getHand().removeCard(card);
         }
 

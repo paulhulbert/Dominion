@@ -3,7 +3,6 @@ package Paladin.Model.CardTypes;
 import Paladin.Controller.Requester;
 import Paladin.Model.*;
 import Paladin.Model.Exceptions.GameLogicException;
-import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 
@@ -24,8 +23,8 @@ public class Cellar extends Card {
     }
 
     @Override
-    public void onPlay(Turn turn, JsonElement choices) throws GameLogicException {
-        super.onPlay(turn, choices);
+    public void onPlay(Turn turn) throws GameLogicException {
+        super.onPlay(turn);
         turn.setCurrentActions(turn.getCurrentActions() + 1);
 
 
@@ -43,7 +42,7 @@ public class Cellar extends Card {
                 "Choose cards to discard for cellar", "Cellar", 0, 9999);
 
         for (Card card : selected) {
-            turn.discardCard(card);
+            turn.currentPlayer.getDeck().discardCard(card);
         }
 
         for (Card card : selected) {

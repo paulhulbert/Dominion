@@ -41,6 +41,46 @@ public class MessageHandler {
             }
         }
 
+        if (type.equals("remoteStringSelectResponse")) {
+            remoteRequests.put(jsonElement.getAsJsonObject().get("Details").getAsJsonObject().get("uniqueId").getAsString(),
+                    jsonElement);
+        }
+
+        if (type.equals("remoteStringSelectRequest")) {
+
+            if (jsonElement.getAsJsonObject().get("Details").getAsJsonObject().get("target").
+                    getAsString().equals(GameManagerObject.localPlayer.getName())) {
+
+
+                JsonArray cards = jsonElement.getAsJsonObject().get("Details").getAsJsonObject().get("options").getAsJsonArray();
+
+                ArrayList<String> options = new ArrayList<>();
+
+                for (JsonElement element : cards) {
+                    options.add(element.getAsString());
+                }
+
+                String messageText = jsonElement.getAsJsonObject().get("Details").getAsJsonObject().get("message").getAsString();
+                String title = jsonElement.getAsJsonObject().get("Details").getAsJsonObject().get("title").getAsString();
+
+                String selected = GameManagerObject.userRequester.askUserToSelectString(options, messageText, title);
+
+
+                String cardsSelected = "[\"" + selected + "\"]";
+
+
+
+                Message newMessage = new Message(System.currentTimeMillis(),
+                        GameManagerObject.gameID, GameManagerObject.currentPlayer.getName(), "");
+                newMessage.put("type", "remoteStringSelectResponse");
+                newMessage.put("uniqueId", jsonElement.getAsJsonObject().get("Details").getAsJsonObject().get("uniqueId").getAsString());
+                newMessage.putArray("selected", cardsSelected);
+                DatabaseManager.sendMessage(newMessage);
+
+            }
+        }
+
+
         if (type.equals("remoteCardSelectResponse")) {
             remoteRequests.put(jsonElement.getAsJsonObject().get("Details").getAsJsonObject().get("uniqueId").getAsString(),
                     jsonElement);
@@ -211,7 +251,7 @@ public class MessageHandler {
         int cardID = jsonElement.getAsJsonObject().get("Details").getAsJsonObject().get("cardID").getAsInt();
 
         try {
-            currentTurn.playCard(Constants.cards.get(cardID), jsonElement);
+            currentTurn.playCard(Constants.cards.get(cardID));
         } catch (GameLogicException e) {
             e.printStackTrace();
         }
