@@ -24,6 +24,7 @@ public class Copper extends Card {
     }
     public Copper(int ID) {
         super(0, name, ID);
+        howManyShouldPileContain = 100;
     }
 
     @Override

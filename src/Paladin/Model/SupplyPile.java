@@ -22,13 +22,9 @@ public class SupplyPile {
 
     private String name;
 
+
+
     public SupplyPile(String cardName) {
-        generatePile(cardName);
-    }
-
-
-    public SupplyPile(String cardName, int maxInDeck) {
-        this.maxInDeck = maxInDeck;
         generatePile(cardName);
     }
 
@@ -43,6 +39,7 @@ public class SupplyPile {
 
             for (int i = 0; i < maxInDeck; i++) {
                 cards.add((Card)constructor.newInstance(Constants.getNewCardID()));
+                maxInDeck = cards.get(0).howManyShouldPileContain;
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -85,6 +82,6 @@ public class SupplyPile {
     }
 
     public static void main(String[] args) {
-        SupplyPile supplyPile = new SupplyPile(Copper.class.getName(), 50);
+        SupplyPile supplyPile = new SupplyPile(Copper.class.getName());
     }
 }

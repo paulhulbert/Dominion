@@ -24,6 +24,7 @@ public class Silver extends Card {
     }
     public Silver(int ID) {
         super(3, name, ID);
+        howManyShouldPileContain = 50;
     }
 
     @Override

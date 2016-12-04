@@ -1,9 +1,6 @@
 package Paladin.Model.CardTypes;
 
-import Paladin.Model.Card;
-import Paladin.Model.CardType;
-import Paladin.Model.Constants;
-import Paladin.Model.Player;
+import Paladin.Model.*;
 
 import java.util.ArrayList;
 
@@ -21,6 +18,12 @@ public class Curse extends Card {
     }
     public Curse(int ID) {
         super(0, name, ID);
+
+        howManyShouldPileContain = 10 * (GameManagerObject.players.size() - 1);
+
+        if (howManyShouldPileContain < 10) {
+            howManyShouldPileContain = 10;
+        }
     }
 
     @Override

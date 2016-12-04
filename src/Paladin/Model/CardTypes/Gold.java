@@ -24,6 +24,7 @@ public class Gold extends Card {
     }
     public Gold(int ID) {
         super(6, name, ID);
+        howManyShouldPileContain = 30;
     }
 
     @Override

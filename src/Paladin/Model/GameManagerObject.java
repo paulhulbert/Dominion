@@ -84,15 +84,15 @@ public class GameManagerObject {
 
         piles.clear();
 
-        addPile(Copper.class.getName(), 100);
-        addPile(Silver.class.getName(), 60);
-        addPile(Gold.class.getName(), 30);
+        addPile(Copper.class.getName());
+        addPile(Silver.class.getName());
+        addPile(Gold.class.getName());
 
 
-        addPile(Curse.class.getName(), 10);
-        addPile(Estate.class.getName(), 8);
-        addPile(Duchy.class.getName(), 8);
-        addPile(Province.class.getName(), 8);
+        addPile(Curse.class.getName());
+        addPile(Estate.class.getName());
+        addPile(Duchy.class.getName());
+        addPile(Province.class.getName());
 
 
         /*   Base Set
@@ -186,11 +186,21 @@ public class GameManagerObject {
         }
 
 
+        generatePiles();
+
 
         startGame();
 
     }
 
+    public static void generatePiles() {
+
+        Collections.shuffle(Constants.baseSetNames);
+
+        for (int i = 0; i < 10; i++) {
+            addPile(Constants.baseSetNames.get(i));
+        }
+    }
 
     public static void startGame() throws GameLogicException {
         currentPlayer = players.get(0);
@@ -201,12 +211,9 @@ public class GameManagerObject {
         turn.playTurn();
     }
 
+
     public static void addPile(String name) {
         piles.put(name, new SupplyPile(name));
-    }
-
-    public static void addPile(String name, int amount) {
-        piles.put(name, new SupplyPile(name, amount));
     }
 
     public static void addPlayer(Player player) {

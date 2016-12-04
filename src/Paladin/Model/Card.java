@@ -8,6 +8,7 @@ import Paladin.Model.Exceptions.GameLogicException;
 public abstract class Card {
 
 
+    protected int howManyShouldPileContain = 10;
     private int cost;
 
     private String name;

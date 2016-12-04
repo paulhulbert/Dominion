@@ -1,9 +1,6 @@
 package Paladin.Model.CardTypes;
 
-import Paladin.Model.Card;
-import Paladin.Model.CardType;
-import Paladin.Model.Constants;
-import Paladin.Model.Player;
+import Paladin.Model.*;
 
 import java.util.ArrayList;
 
@@ -21,6 +18,10 @@ public class Duchy extends Card {
     }
     public Duchy(int ID) {
         super(5, name, ID);
+        howManyShouldPileContain = 8;
+        if (GameManagerObject.players.size() > 2) {
+            howManyShouldPileContain = 12;
+        }
     }
 
     @Override
