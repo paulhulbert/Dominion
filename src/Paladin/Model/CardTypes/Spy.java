@@ -20,7 +20,7 @@ public class Spy extends Card {
         Constants.cardIdentifiers.put(name, Card.class.getName().replace("Card", "CardTypes." + name));
     }
     public Spy(int ID) {
-        super(4, name, ID);
+        super(0, name, ID);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class Spy extends Card {
             if (!blocked) {
                 Card topCard = player.getDeck().drawCard();
 
-                String wantToDiscard = Requester.askUserToSelectString(player, options,
+                String wantToDiscard = Requester.askUserToSelectString(GameManagerObject.currentPlayer, options,
                         player.getName() + " revealed a(n) " + topCard.getName() + ".  Do you want them to discard it " +
                                 "or put it back on top of their deck?", "Spy");
 

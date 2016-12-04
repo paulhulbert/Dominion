@@ -45,6 +45,10 @@ public abstract class Card {
 
     }
 
+    public void onCleanup() {
+
+    }
+
     public int getVictoryPointWorth(Player owner) {
         return 0;
     }

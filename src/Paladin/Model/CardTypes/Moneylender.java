@@ -27,19 +27,16 @@ public class Moneylender extends Card {
         super.onPlay(turn);
 
 
-        ArrayList<Card> options = new ArrayList<>();
 
         for (Card card : turn.currentPlayer.getHand().getCards()) {
             if (card instanceof Copper) {
                 turn.trashCard(card);
+                turn.setCurrentMoney(turn.getCurrentMoney() + 3);
                 break;
             }
         }
-        if (options.isEmpty()) {
-            return;
-        }
 
-        turn.setCurrentMoney(turn.getCurrentMoney() + 3);
+
 
 
 

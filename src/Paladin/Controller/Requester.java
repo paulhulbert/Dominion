@@ -30,6 +30,8 @@ public class Requester {
 
         stringOptions = stringOptions.substring(0,stringOptions.length() - 2) + "\"]";
 
+        uniqueId = uniquefyID(uniqueId);
+
         //You are asking someone else
         if (GameManagerObject.currentPlayer.equals(GameManagerObject.localPlayer)) {
             Message newMessage = new Message(System.currentTimeMillis(),
@@ -52,7 +54,10 @@ public class Requester {
             }
         }
 
+        System.out.println("MessageHandler.remoteRequests contains unique ID: " + uniqueId);
+
         JsonElement jsonElement = MessageHandler.remoteRequests.get(uniqueId);
+        MessageHandler.remoteRequests.remove(uniqueId);
 
         JsonArray selectedArray = jsonElement.getAsJsonObject().get("Details").getAsJsonObject().get("selected").getAsJsonArray();
 
@@ -166,6 +171,7 @@ public class Requester {
                 }
 
                 cardOptions = cardOptions.substring(0,cardOptions.length() - 2) + "\"]";
+                uniqueId = uniquefyID(uniqueId);
 
                 //You are asking someone else
                 if (GameManagerObject.currentPlayer.equals(GameManagerObject.localPlayer)) {
@@ -191,7 +197,11 @@ public class Requester {
                     }
                 }
 
+                System.out.println("MessageHandler.remoteRequests contains unique ID: " + uniqueId);
+
                 JsonElement jsonElement = MessageHandler.remoteRequests.get(uniqueId);
+                MessageHandler.remoteRequests.remove(uniqueId);
+
 
                 JsonArray cards = jsonElement.getAsJsonObject().get("Details").getAsJsonObject().get("cards").getAsJsonArray();
 
@@ -207,6 +217,23 @@ public class Requester {
 
             }
         }
+
+    }
+
+
+    private static String uniquefyID(String ID) {
+
+        /*int counter = 0;
+
+        if (MessageHandler.remoteRequests.containsKey(ID)) {
+            MessageHandler.remoteRequests.remove(ID);
+        }
+
+        while (MessageHandler.remoteRequests.containsKey(ID)) {
+            ID += counter++;
+        }*/
+
+        return ID;
 
     }
 

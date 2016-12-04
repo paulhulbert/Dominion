@@ -97,6 +97,18 @@ public class Turn {
         }
         phase = TurnPhase.CLEANUP;
 
+        for (Card card : currentPlayer.getHand().getCards()) {
+            card.onCleanup();
+        }
+
+        for (Card card : cardsPlayedThisTurn) {
+            card.onCleanup();
+        }
+
+        for (Card card : cardsGainedThisTurn) {
+            card.onCleanup();
+        }
+
         endTurn();
     }
 
@@ -189,6 +201,9 @@ public class Turn {
         }
 
         for (Card card : cardsPlayedThisTurn) {
+            if (GameManagerObject.trash.contains(card)) {
+                continue;
+            }
             currentPlayer.getDeck().addCardToDiscard(card);
         }
 

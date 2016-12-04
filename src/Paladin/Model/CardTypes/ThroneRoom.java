@@ -40,8 +40,8 @@ public class ThroneRoom extends Card {
         }
         actionCardsInHand.add(null);
         Card cardToPlay = Requester.askUserToSelectSingleCard(turn.currentPlayer, actionCardsInHand,
-                "Play an action card",
-                "Choose Action Card");
+                "Throne Room an action card",
+                "Throne Room");
         if (cardToPlay == null) {
             return;
         }

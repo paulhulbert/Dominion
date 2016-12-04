@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class Laboratory extends Card {
 
-    private static String name = "Village";
+    private static String name = "Laboratory";
     static {
         ArrayList<CardType> cardTypes = new ArrayList<>();
         cardTypes.add(CardType.ACTION);
@@ -21,7 +21,7 @@ public class Laboratory extends Card {
         Constants.cardIdentifiers.put(name, Card.class.getName().replace("Card", "CardTypes." + name));
     }
     public Laboratory(int ID) {
-        super(3, name, ID);
+        super(5, name, ID);
     }
 
     @Override

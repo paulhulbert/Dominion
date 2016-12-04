@@ -42,17 +42,21 @@ public class Thief extends Card {
                 }
             }
 
-            Card card1 = player.getDeck().drawCard();
-            Card card2 = player.getDeck().drawCard();
-
-            if (card1 != null && Constants.cardTypes.get(card1.getName()).contains(CardType.TREASURE)) {
-                options.add(card1);
-            }
-            if (card2 != null && Constants.cardTypes.get(card2.getName()).contains(CardType.TREASURE)) {
-                options.add(card2);
-            }
-
             if (!blocked) {
+                Card card1 = player.getDeck().drawCard();
+                Card card2 = player.getDeck().drawCard();
+
+                if (card1 != null && Constants.cardTypes.get(card1.getName()).contains(CardType.TREASURE)) {
+                    options.add(card1);
+                } else {
+                    player.getDeck().addCardToDiscard(card1);
+                }
+                if (card2 != null && Constants.cardTypes.get(card2.getName()).contains(CardType.TREASURE)) {
+                    options.add(card2);
+                } else {
+                    player.getDeck().addCardToDiscard(card2);
+                }
+
 
                 if (!options.isEmpty()) {
                     Card selected = null;
@@ -64,7 +68,11 @@ public class Thief extends Card {
                         selected = options.get(0);
                     }
                     trashedCards.add(selected);
-                    player.getHand().removeCard(selected);
+                    options.remove(selected);
+                }
+
+                for (Card card : options) {
+                    player.getDeck().addCardToDiscard(card);
                 }
             }
 

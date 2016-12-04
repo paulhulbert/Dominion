@@ -85,7 +85,17 @@ public class GameManagerObject {
         piles.clear();
 
         addPile(Copper.class.getName(), 100);
+        addPile(Silver.class.getName(), 60);
+        addPile(Gold.class.getName(), 30);
+
+
+        addPile(Curse.class.getName(), 10);
         addPile(Estate.class.getName(), 8);
+        addPile(Duchy.class.getName(), 8);
+        addPile(Province.class.getName(), 8);
+
+
+        /*   Base Set
         addPile(Village.class.getName(), 10);
         addPile(Woodcutter.class.getName(), 10);
         addPile(Smithy.class.getName(), 10);
@@ -94,13 +104,28 @@ public class GameManagerObject {
         addPile(Workshop.class.getName(), 10);
         addPile(Chancellor.class.getName(), 10);
         addPile(Remodel.class.getName(), 10);
-        addPile(Duchy.class.getName(), 8);
-        addPile(Gold.class.getName(), 30);
         addPile(Market.class.getName(), 10);
         addPile(Militia.class.getName(), 10);
         addPile(Mine.class.getName(), 10);
-        addPile(Province.class.getName(), 8);
-        addPile(Silver.class.getName(), 60);
+        addPile(Festival.class.getName(), 10);
+        addPile(Adventurer.class.getName(), 10);
+        addPile(Bureaucrat.class.getName(), 10);
+        addPile(CouncilRoom.class.getName(), 10);
+        addPile(Feast.class.getName(), 10);
+        addPile(Gardens.class.getName(), 10);
+        addPile(Laboratory.class.getName(), 10);
+        addPile(Library.class.getName(), 10);
+        addPile(ThroneRoom.class.getName(), 10);
+        addPile(Moneylender.class.getName(), 10);
+        addPile(Witch.class.getName(), 10);
+        addPile(Thief.class.getName(), 10);
+        addPile(Spy.class.getName(), 10);
+        */
+
+
+
+
+
 
         turns.clear();
 

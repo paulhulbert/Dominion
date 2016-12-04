@@ -44,6 +44,8 @@ public class Feast extends Card {
 
         turn.getCardsGainedThisTurn().add(GameManagerObject.piles.get(selected.getClass().getName()).drawCard());
 
+        turn.currentPlayer.getHand().addCard(this);
+
         turn.trashCard(this);
 
     }
