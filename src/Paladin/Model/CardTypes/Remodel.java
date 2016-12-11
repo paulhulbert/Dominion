@@ -59,7 +59,7 @@ public class Remodel extends Card {
         selected = Requester.askUserToSelectSingleCard(turn.currentPlayer, options,
                 "Choose card to gain, up to " + (selected.getCost() + 2), "Remodel");
 
-        turn.getCardsGainedThisTurn().add(GameManagerObject.piles.get(selected.getClass().getName()).drawCard());
+        turn.gainCard(GameManagerObject.piles.get(selected.getClass().getName()).drawCard());
 
     }
 }

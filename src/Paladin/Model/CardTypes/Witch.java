@@ -40,7 +40,7 @@ public class Witch extends Card {
 
             if (!blocked) {
                 if (GameManagerObject.piles.get("Paladin.Model.CardTypes.Curse").getSize() > 0) {
-                    player.getDeck().addCardToDiscard(GameManagerObject.piles.get("Paladin.Model.CardTypes.Curse").drawCard());
+                    player.getDeck().addCardToDiscard(GameManagerObject.piles.get("Paladin.Model.CardTypes.Curse").drawCard(), true);
                 }
             }
 

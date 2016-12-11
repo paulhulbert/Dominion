@@ -4,7 +4,6 @@ import Paladin.Controller.Requester;
 import Paladin.Model.*;
 import Paladin.Model.Exceptions.GameLogicException;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
 /**
@@ -49,12 +48,12 @@ public class Thief extends Card {
                 if (card1 != null && Constants.cardTypes.get(card1.getName()).contains(CardType.TREASURE)) {
                     options.add(card1);
                 } else {
-                    player.getDeck().addCardToDiscard(card1);
+                    player.getDeck().addCardToDiscard(card1, false);
                 }
                 if (card2 != null && Constants.cardTypes.get(card2.getName()).contains(CardType.TREASURE)) {
                     options.add(card2);
                 } else {
-                    player.getDeck().addCardToDiscard(card2);
+                    player.getDeck().addCardToDiscard(card2, false);
                 }
 
 
@@ -72,7 +71,7 @@ public class Thief extends Card {
                 }
 
                 for (Card card : options) {
-                    player.getDeck().addCardToDiscard(card);
+                    player.getDeck().addCardToDiscard(card, false);
                 }
             }
 
@@ -86,7 +85,7 @@ public class Thief extends Card {
 
             for (Card card : trashedCards) {
                 if (selected.contains(card)) {
-                    turn.getCardsGainedThisTurn().add(card);
+                    turn.gainCard(card);
                 } else {
                     GameManagerObject.trash.add(card);
                 }

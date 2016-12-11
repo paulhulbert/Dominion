@@ -11,17 +11,17 @@ public class Player {
 
     private String name = "Paul";
 
-    private Deck deck = new Deck();
+    private Deck deck = new Deck(this);
     private Hand hand = new Hand();
 
 
     public Player(String name) throws GameLogicException {
         this.name = name;
         for (int i = 0; i < 7; i++) {
-            deck.addCardToDiscard(new Copper(Constants.getNewCardID()));
+            deck.addCardToDiscard(new Copper(Constants.getNewCardID()), false);
         }
         for (int i = 0; i < 3; i++) {
-            deck.addCardToDiscard(new Estate(Constants.getNewCardID()));
+            deck.addCardToDiscard(new Estate(Constants.getNewCardID()), false);
         }
 
         for (int i = 0; i < 5; i++) {

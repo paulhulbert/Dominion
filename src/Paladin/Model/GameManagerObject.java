@@ -123,6 +123,14 @@ public class GameManagerObject {
         */
 
 
+        /*  Hinterlands - tested
+
+
+         */
+
+
+        addPile(Crossroads.class.getName());
+        addPile(Duchess.class.getName());
 
 
 
@@ -195,6 +203,10 @@ public class GameManagerObject {
 
     public static void generatePiles() {
 
+        if (true) {
+            return;  //TODO remove this for release
+        }
+
         Collections.shuffle(Constants.baseSetNames);
 
         for (int i = 0; i < 10; i++) {
@@ -209,6 +221,10 @@ public class GameManagerObject {
         uiInterface.update();
 
         turn.playTurn();
+    }
+
+    public static void trashCard(Player player, Card card) {
+        trash.add(card);
     }
 
 

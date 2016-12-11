@@ -1,5 +1,6 @@
 package Paladin.Model.CardTypes;
 
+import Paladin.Controller.Requester;
 import Paladin.Model.*;
 
 import java.util.ArrayList;
@@ -21,6 +22,27 @@ public class Duchy extends Card {
         howManyShouldPileContain = 8;
         if (GameManagerObject.players.size() > 2) {
             howManyShouldPileContain = 12;
+        }
+    }
+
+    @Override
+    public void onGain() {
+        super.onGain();
+
+        if (GameManagerObject.piles.containsKey(Duchess.class.getName()) &&
+                GameManagerObject.piles.get(Duchess.class.getName()).getSize() > 0) {
+            Player gainer = FrequentUseCardMethods.whoOwnsThisCard(this);
+
+            ArrayList<String> options = new ArrayList<>();
+            options.add("Yes");
+            options.add("No");
+
+            String wantToDiscard = Requester.askUserToSelectString(gainer, options,
+                    "Do you want to gain a duchess with your duchy?", "Duchy");
+
+            if (wantToDiscard.equals("Yes")) {
+                gainer.getDeck().addCardToDiscard(GameManagerObject.piles.get(Duchess.class.getName()).drawCard(), true);
+            }
         }
     }
 

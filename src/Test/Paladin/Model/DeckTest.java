@@ -6,9 +6,6 @@ import Paladin.Model.Exceptions.GameLogicException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 /**
  * Created by paulh on 11/19/2016.
  */
@@ -56,7 +53,7 @@ public class DeckTest {
             int newCardID = Constants.getNewCardID();
             Card topCard = new Copper(newCardID);
 
-            GameManagerObject.turns.get(0).currentPlayer.getDeck().addCardToTopOfDrawPile(topCard);
+            GameManagerObject.turns.get(0).currentPlayer.getDeck().addCardToTopOfDrawPile(topCard, false);
 
 
             Assert.assertEquals(topCard, GameManagerObject.turns.get(0).currentPlayer.getDeck().drawCard());

@@ -9,6 +9,41 @@ import java.util.ArrayList;
  */
 public class FrequentUseCardMethods {
 
+    public static Player whoOwnsThisCard(Card cardToLookFor) {
+
+        for (Card card : GameManagerObject.getCurrentTurn().getCardsPlayedThisTurn()) {
+            if (card.equals(cardToLookFor)) {
+                return GameManagerObject.getCurrentTurn().currentPlayer;
+            }
+        }
+
+        for (Card card : GameManagerObject.getCurrentTurn().getCardsGainedThisTurn()) {
+            if (card.equals(cardToLookFor)) {
+                return GameManagerObject.getCurrentTurn().currentPlayer;
+            }
+        }
+
+        for (Player player : GameManagerObject.players) {
+            for (Card card : player.getHand().getCards()) {
+                if (card.equals(cardToLookFor)) {
+                    return player;
+                }
+            }
+            for (Card card : player.getDeck().getDiscardPile()) {
+                if (card.equals(cardToLookFor)) {
+                    return player;
+                }
+            }
+            for (Card card : player.getDeck().getDrawPile()) {
+                if (card.equals(cardToLookFor)) {
+                    return player;
+                }
+            }
+        }
+
+        return null;
+    }
+
     public static void forcePlayerToDiscardDownToX(int X, Player player) {
 
         int numberToDiscard = player.getHand().getCards().size() - X;

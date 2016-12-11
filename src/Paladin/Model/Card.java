@@ -2,6 +2,8 @@ package Paladin.Model;
 
 import Paladin.Model.Exceptions.GameLogicException;
 
+import java.util.ArrayList;
+
 /**
  * Created by paulh on 10/4/2016.
  */
@@ -27,6 +29,14 @@ public abstract class Card {
 
     }
 
+    public void onGain() {
+
+    }
+
+    public void playerGainedCard(Player player, Card card) {
+
+    }
+
     /**
      * This action is implemented by individual cards.  They will check if the choices parameter
      * is null, and if it is, they will make all their requests to the UserRequester, and record the responses to be
@@ -46,7 +56,7 @@ public abstract class Card {
 
     }
 
-    public void onCleanup() {
+    public void onCleanup(ArrayList<Card> cardsToRemove) {
 
     }
 

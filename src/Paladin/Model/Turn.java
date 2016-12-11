@@ -97,16 +97,28 @@ public class Turn {
         }
         phase = TurnPhase.CLEANUP;
 
+        ArrayList<Card> handCardsToRemove = new ArrayList<>();
         for (Card card : currentPlayer.getHand().getCards()) {
-            card.onCleanup();
+            card.onCleanup(handCardsToRemove);
+        }
+        for (Card card : handCardsToRemove) {
+            currentPlayer.getHand().getCards().remove(card);
         }
 
+        ArrayList<Card> playedCardsToRemove = new ArrayList<>();
         for (Card card : cardsPlayedThisTurn) {
-            card.onCleanup();
+            card.onCleanup(playedCardsToRemove);
+        }
+        for (Card card : playedCardsToRemove) {
+            cardsPlayedThisTurn.remove(card);
         }
 
+        ArrayList<Card> gainedCardsToRemove = new ArrayList<>();
         for (Card card : cardsGainedThisTurn) {
-            card.onCleanup();
+            card.onCleanup(gainedCardsToRemove);
+        }
+        for (Card card : gainedCardsToRemove) {
+            cardsGainedThisTurn.remove(card);
         }
 
         endTurn();
@@ -158,7 +170,7 @@ public class Turn {
         removeMoney(card.getCost());
 
         card.onBuy(this);
-        cardsGainedThisTurn.add(card);
+        gainCard(card);
         GameManagerObject.piles.get(name).removeCard(card);
         currentBuys--;
 
@@ -172,6 +184,23 @@ public class Turn {
             return;
         }
         currentPlayer.getHand().addCard(card);
+    }
+
+    public void gainCard(Card card) {
+        cardsGainedThisTurn.add(card);
+
+
+        card.onGain();
+
+
+        ArrayList<Player> players = GameManagerObject.getPlayersAsideFromSpecifiedInOrder(currentPlayer);
+        players.add(0, currentPlayer);
+
+        for (Player player : players) {
+            for (Card cardInHand : player.getHand().getCards()) {
+                cardInHand.playerGainedCard(currentPlayer, card);
+            }
+        }
     }
 
     public void addMoney(int amount) {
@@ -192,19 +221,19 @@ public class Turn {
         ArrayList<Card> currentHand = currentPlayer.getHand().getCards();
 
         for (Card card : currentHand) {
-            currentPlayer.getDeck().addCardToDiscard(card);
+            currentPlayer.getDeck().addCardToDiscard(card, false);
         }
         currentHand.clear();
 
         for (Card card : cardsGainedThisTurn) {
-            currentPlayer.getDeck().addCardToDiscard(card);
+            currentPlayer.getDeck().addCardToDiscard(card, false);
         }
 
         for (Card card : cardsPlayedThisTurn) {
             if (GameManagerObject.trash.contains(card)) {
                 continue;
             }
-            currentPlayer.getDeck().addCardToDiscard(card);
+            currentPlayer.getDeck().addCardToDiscard(card, false);
         }
 
 

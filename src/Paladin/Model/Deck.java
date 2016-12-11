@@ -15,6 +15,12 @@ import java.util.Collections;
  */
 public class Deck {
 
+    private Player owner;
+
+    public Deck(Player owner) {
+        this.owner = owner;
+    }
+
     /**
      * The last element in the draw pile is on top of the deck
      */
@@ -24,17 +30,45 @@ public class Deck {
     private ArrayList<Card> discardPile = new ArrayList<>();
 
 
-    public void addCardToDiscard(Card card) {
+    public void addCardToDiscard(Card card, boolean wasGained) {
         discardPile.add(card);
+
+        if (wasGained) {
+            card.onGain();
+
+
+            ArrayList<Player> players = GameManagerObject.getPlayersAsideFromSpecifiedInOrder(owner);
+            players.add(0, owner);
+
+            for (Player player : players) {
+                for (Card cardInHand : player.getHand().getCards()) {
+                    cardInHand.playerGainedCard(owner, card);
+                }
+            }
+        }
     }
 
     public void discardCard(Card card) {
-        addCardToDiscard(card);
+        addCardToDiscard(card, false);
         card.onDiscard();
     }
 
-    public void addCardToTopOfDrawPile(Card card) {
+    public void addCardToTopOfDrawPile(Card card, boolean wasGained) {
         drawPile.add(card);
+
+        if (wasGained) {
+            card.onGain();
+
+
+            ArrayList<Player> players = GameManagerObject.getPlayersAsideFromSpecifiedInOrder(owner);
+            players.add(0, owner);
+
+            for (Player player : players) {
+                for (Card cardInHand : player.getHand().getCards()) {
+                    cardInHand.playerGainedCard(owner, card);
+                }
+            }
+        }
     }
 
     public void addCardToBottomOfDrawPile(Card card) {
