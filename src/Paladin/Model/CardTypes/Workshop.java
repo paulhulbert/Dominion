@@ -42,7 +42,7 @@ public class Workshop extends Card {
         Card selected = Requester.askUserToSelectSingleCard(turn.currentPlayer, options,
                 "Choose card to gain", "Workshop");
 
-        turn.getCardsGainedThisTurn().add(GameManagerObject.piles.get(selected.getClass().getName()).drawCard());
+        turn.gainCard(GameManagerObject.piles.get(selected.getClass().getName()).drawCard());
 
     }
 }

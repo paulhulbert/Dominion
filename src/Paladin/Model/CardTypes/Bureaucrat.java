@@ -26,7 +26,7 @@ public class Bureaucrat extends Card {
     @Override
     public void onPlay(Turn turn) throws GameLogicException {
         super.onPlay(turn);
-        turn.currentPlayer.getDeck().addCardToTopOfDrawPile(GameManagerObject.piles.get("Paladin.Model.CardTypes.Silver").drawCard());
+        turn.currentPlayer.getDeck().addCardToTopOfDrawPile(GameManagerObject.piles.get("Paladin.Model.CardTypes.Silver").drawCard(), true);
         ArrayList<Player> players = GameManagerObject.getPlayersAsideFromSpecifiedInOrder(GameManagerObject.currentPlayer);
 
         for (Player player : players) {
@@ -55,7 +55,7 @@ public class Bureaucrat extends Card {
                             "Bureaucrat", 1, 1);
 
                     for (Card card : selected) {
-                        player.getDeck().addCardToTopOfDrawPile(card);
+                        player.getDeck().addCardToTopOfDrawPile(card, false);
                         player.getHand().removeCard(card);
                     }
                 }

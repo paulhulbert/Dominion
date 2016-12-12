@@ -57,7 +57,7 @@ public class Spy extends Card {
                 if (wantToDiscard.equals("Discard")) {
                     player.getDeck().discardCard(topCard);
                 } else {
-                    player.getDeck().addCardToTopOfDrawPile(topCard);
+                    player.getDeck().addCardToTopOfDrawPile(topCard, false);
                 }
             }
 
