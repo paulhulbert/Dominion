@@ -195,7 +195,7 @@ public class GameManagerObject {
 
     public static void generatePiles() {
 
-        Collections.shuffle(Constants.baseSetNames);
+        Collections.shuffle(Constants.baseSetNames, seededRandom);
 
         for (int i = 0; i < 10; i++) {
             addPile(Constants.baseSetNames.get(i));

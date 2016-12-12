@@ -20,7 +20,7 @@ public class Spy extends Card {
         Constants.cardIdentifiers.put(name, Card.class.getName().replace("Card", "CardTypes." + name));
     }
     public Spy(int ID) {
-        super(0, name, ID);
+        super(4, name, ID);
     }
 
     @Override
