@@ -129,19 +129,6 @@ public class MainWindow implements UIInterface{
 
 
 
-                    for (Player player : GameManagerObject.players) {
-                        if (!localPlayer.equals(player)) {
-                            ((DefaultListModel)myHand.getModel()).addElement("---");
-                            ((DefaultListModel)myHand.getModel()).addElement("---");
-                            ((DefaultListModel)myHand.getModel()).addElement("---");
-
-                            for (Card card : player.getHand().getCards()) {
-                                ((DefaultListModel)myHand.getModel()).addElement(card.getName());
-                            }
-                        }
-                    }
-
-
 
                     ((DefaultListModel)decks.getModel()).clear();
 
