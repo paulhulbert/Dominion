@@ -207,8 +207,7 @@ public class GameManagerObject {
             return;  //TODO remove this for release
         }
 
-        Collections.shuffle(Constants.baseSetNames);
-
+        Collections.shuffle(Constants.baseSetNames, seededRandom);
         for (int i = 0; i < 10; i++) {
             addPile(Constants.baseSetNames.get(i));
         }
