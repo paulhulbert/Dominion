@@ -56,11 +56,13 @@ public class FoolsGold extends Card {
                 options.add("Yes");
                 options.add("No");
 
-                String wantToDiscard = Requester.askUserToSelectString(gainer, options,
-                        "Do you want to gain a duchess with your duchy?", "Duchy");
+                String wantToTrash = Requester.askUserToSelectString(ownerOfFoolsGold, options,
+                        "Do you want to trash your fool's gold and gain a gold?", "Fool's Gold");
 
-                if (wantToDiscard.equals("Yes")) {
-                    gainer.getDeck().addCardToDiscard(GameManagerObject.piles.get(Duchess.class.getName()).drawCard(), true);
+                if (wantToTrash.equals("Yes")) {
+                    GameManagerObject.trashCard(ownerOfFoolsGold, this);
+                    ownerOfFoolsGold.getHand().removeCard(this);
+                    ownerOfFoolsGold.getDeck().addCardToDiscard(GameManagerObject.piles.get(Gold.class.getName()).drawCard(), true);
                 }
             }
         }

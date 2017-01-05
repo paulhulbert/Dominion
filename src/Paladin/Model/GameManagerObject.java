@@ -131,6 +131,7 @@ public class GameManagerObject {
 
         addPile(Crossroads.class.getName());
         addPile(Duchess.class.getName());
+        addPile(FoolsGold.class.getName());
 
 
 
