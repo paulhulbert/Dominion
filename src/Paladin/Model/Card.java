@@ -56,7 +56,7 @@ public abstract class Card {
 
     }
 
-    public void onCleanup(ArrayList<Card> cardsToRemove) {
+    public void onCleanup(ArrayList<Card> cardsToRemove) throws GameLogicException {
 
     }
 

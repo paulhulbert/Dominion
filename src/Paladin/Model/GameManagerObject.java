@@ -132,6 +132,11 @@ public class GameManagerObject {
         addPile(Crossroads.class.getName());
         addPile(Duchess.class.getName());
         addPile(FoolsGold.class.getName());
+        addPile(Develop.class.getName());
+        addPile(Oasis.class.getName());
+        addPile(Oracle.class.getName());
+        addPile(Scheme.class.getName());
+        addPile(Tunnel.class.getName());
 
 
 
