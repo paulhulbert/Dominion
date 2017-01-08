@@ -50,7 +50,7 @@ public class Duchess extends Card {
 
             String wantToDiscard = Requester.askUserToSelectString(player, options,
                     "You revealed a(n) " + topCard.getName() + " due to a duchess.  Do you want to discard it " +
-                            "or put it back on top of their deck?", "Duchess");
+                            "or put it back on top of your deck?", "Duchess");
 
             if (wantToDiscard.equals("Discard")) {
                 player.getDeck().discardCard(topCard);

@@ -155,7 +155,7 @@ public class Turn {
         }
     }
 
-    public boolean buyCard(String name) {
+    public boolean buyCard(String name) throws GameLogicException {
 
         Card card = null;
         if (GameManagerObject.piles.containsKey(name)) {
@@ -226,7 +226,11 @@ public class Turn {
         currentHand.clear();
 
         for (Card card : cardsGainedThisTurn) {
-            currentPlayer.getDeck().addCardToDiscard(card, false);
+            if (card.getName().equals("NomadCamp")) {
+                currentPlayer.getDeck().addCardToTopOfDrawPile(card, false);
+            } else {
+                currentPlayer.getDeck().addCardToDiscard(card, false);
+            }
         }
 
         for (Card card : cardsPlayedThisTurn) {

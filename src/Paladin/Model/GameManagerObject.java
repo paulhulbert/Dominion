@@ -137,6 +137,11 @@ public class GameManagerObject {
         addPile(Oracle.class.getName());
         addPile(Scheme.class.getName());
         addPile(Tunnel.class.getName());
+        addPile(JackOfAllTrades.class.getName());
+        addPile(NobleBrigand.class.getName());
+        addPile(NomadCamp.class.getName());
+        addPile(SilkRoad.class.getName());
+        addPile(SpiceMerchant.class.getName());
 
 
 

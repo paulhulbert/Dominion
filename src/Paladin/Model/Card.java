@@ -25,7 +25,7 @@ public abstract class Card {
     }
 
 
-    public void onBuy(Turn turn) {
+    public void onBuy(Turn turn) throws GameLogicException {
 
     }
 

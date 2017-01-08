@@ -39,8 +39,7 @@ public class Remodel extends Card {
         Card selected = Requester.askUserToSelectSingleCard(turn.currentPlayer, options,
                 "Choose card to remodel", "Remodel");
 
-        turn.currentPlayer.getHand().removeCard(selected);
-        GameManagerObject.trash.add(selected);
+        turn.trashCard(selected);
 
 
 
