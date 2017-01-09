@@ -43,6 +43,7 @@ public class Oasis extends Card {
         Card selected = Requester.askUserToSelectSingleCard(turn.currentPlayer, options,
                 "Choose a card to discard", "Oasis");
 
+        turn.currentPlayer.getHand().getCards().remove(selected);
         turn.currentPlayer.getDeck().discardCard(selected);
 
     }

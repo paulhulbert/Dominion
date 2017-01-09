@@ -142,6 +142,11 @@ public class GameManagerObject {
         addPile(NomadCamp.class.getName());
         addPile(SilkRoad.class.getName());
         addPile(SpiceMerchant.class.getName());
+        addPile(Trader.class.getName());
+        addPile(Cache.class.getName());
+        addPile(Cartographer.class.getName());
+        addPile(Embassy.class.getName());
+        addPile(Haggler.class.getName());
 
 
 

@@ -1,5 +1,7 @@
 package Paladin.Model;
 
+import Paladin.Controller.Requester;
+import Paladin.Model.CardTypes.Haggler;
 import Paladin.Model.Exceptions.GameLogicException;
 
 import java.util.ArrayList;
@@ -26,7 +28,32 @@ public abstract class Card {
 
 
     public void onBuy(Turn turn) throws GameLogicException {
+        int hagglerCount = 0;
 
+        for (Card card : turn.getCardsPlayedThisTurn()) {
+            if (card instanceof Haggler) {
+                hagglerCount++;
+            }
+        }
+
+        for (int i = 0; i < hagglerCount; i++) {
+            ArrayList<Card> options = new ArrayList<>();
+
+            for (String s : GameManagerObject.piles.keySet()) {
+                SupplyPile pile = GameManagerObject.piles.get(s);
+                if (pile.getSize() != 0 && pile.getTopCard().getCost() <= this.getCost() && !Constants.cardTypes.get(pile.getTopCard()).contains(CardType.VICTORY)) {
+                    options.add(pile.getTopCard());
+                }
+            }
+            if (options.isEmpty()) {
+                return;
+            }
+
+            Card selected = Requester.askUserToSelectSingleCard(turn.currentPlayer, options,
+                    "Choose card to gain", "Haggler");
+
+            turn.gainCard(GameManagerObject.piles.get(selected.getClass().getName()).drawCard());
+        }
     }
 
     public void onGain() {
